@@ -11,6 +11,10 @@
   And hace clic en el boton continuar
   Then El sistema valida el campo "Taller" como válido
   And  El sistema valida el campo "Ciudad del taller" como valido
+  When El usuario avanza a la pantalla "Detalle Valoracion"
+  Then El sistema muestra el "Taller" y "Ciudad de taller" asociado al aviso
+  And no permite realizar edicion de esta informacion
+
 
   Examples:
   |Tecnologia de pintura|
@@ -45,6 +49,9 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
   And hace clic en el boton continuar
   Then El sistema valida el campo "Taller" como válido
   And  El sistema valida el campo "Ciudad del taller" como valido
+  When El usuario avanza  a la pantalla "Detalle Valoracion"
+  Then El sistema muestra el nuevo taller asociado al aviso
+  And no permite realizar la edicion del taller.
 
 #3
   Scenario: Validar cambio de "Taller" y "Ciudad de Taller" desde la edicion del detalle del aviso
@@ -59,6 +66,9 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
   And hace clic en el boton continuar
   Then El sistema valida el campo "Taller" como válido
   And  El sistema valida el campo "Ciudad del taller" como valido
+  When El usuario avanza  a la pantalla "Detalle Valoracion"
+  Then El sistema muestra el "Taller" y "Ciudad de taller" asociado al aviso
+  And no permite realizar la edicion de esta informacion
 #4
   Scenario: Validar cambio de taller en la misma ciudad desde datos basicos
 
@@ -71,6 +81,9 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
   And hace clic en el boton continuar
   Then El sistema valida el campo "Taller" como válido
   And  El sistema valida el campo "Ciudad del taller" como valido
+  When El usuario avanza  a la pantalla "Detalle Valoracion"
+  Then El sistema muestra el nuevo "Taller" y "Ciudad de taller" asociado al aviso
+  And no permite realizar la edicion de esta informacion
   When El usuario accede al detalle del aviso
   Then El sistema muestra en el campo "Taller" el taller que ha sido modificado desde datos basicos
   And El sistema muestra en el campo "Ciudad del taller" la ciudad del taller que quedo seleccionada desde datos basicos asociada al taller

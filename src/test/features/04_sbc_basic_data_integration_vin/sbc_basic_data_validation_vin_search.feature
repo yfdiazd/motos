@@ -32,8 +32,8 @@ Scenario: Validacion VIN OCR con Coincidencia Exacta 17 caracteres en pais difer
   And  El sistema permite modificar el valor comercial
   When el usuario ingresa el valor comercial del vehiculo en el campo "Valor comercial"
   And   diligencia los demas campos del formulario datos basicos
-  And  hace clic en el boton continuar
-  Then   El sistema redirecciona a la pantalla de zonas afectadas
+  And  hace clic en el boton "Continuar"
+  Then   El sistema redirecciona a la pantalla de "Zonas afectadas"
   And  Asigna identificador que permita determinar que el vin fue reconocido
 
 #3 Consultar duda valor comercial a Rodri porque se entrega desde marca.
@@ -42,6 +42,7 @@ Scenario: Validacion Reconocimiento Parcial VIN 11 caracteres para el pais busca
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   When  el usuario digita el numero de <VIN> en el campo VIN
+  And completa la informacion del VIN con "0" hasta completar los 17 caracteres
   Then  El sistema consume el servicio de IA con los parametros "numero de vin", "pais" y "tipo de vehiculo"
   And   IA encuentra coincidencia parcial en el pais buscado
   Then El sistema muestra el listado de marcas disponibles para el tipo de vehiculo
@@ -74,6 +75,7 @@ Examples:
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   When  el usuario digita el numero de <VIN> en el campo VIN
+  And completa la informacion del VIN con "0" hasta completar los 17 caracteres
   Then  El sistema consume el servicio de IA con los parametros "numero de vin", "pais" y "tipo de vehiculo"
   And   IA encuentra coincidencia parcial en otro pais diferente al buscado
   Then El sistema muestra el listado de marcas disponibles para el tipo de vehiculo
@@ -91,7 +93,7 @@ Examples:
   And  El sistema antepone el prefijo de moneda y permite modificar la informacion del campo valor comercial
   When El usuario ingresa el valor comercial
   And  diligencia los demas campos del formulario datos basicos
-  And  hace clic en el boton continuar
+  And  hace clic en el boton "Continuar"
   Then   El sistema redirecciona a la pantalla de zonas afectadas
   And  Asigna identificador que permita determinar que el vin fue digitado
 
@@ -125,7 +127,12 @@ Examples:
   And  Asigna identificador que permita determinar que el vin fue digitado
 
 
+  #6  Falta criterio
+  Scenario: Validacion VIN menor a 17 digitos
 
-
-
+  Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
+  When  el usuario digita el numero de <VIN> en el campo VIN con valor menor a 17 caracteres
+  Then  El sistema  valida el VIN ingresado
+  And muestra el mensaje: "Por favor complete 17 caracteres ingresando '0' a la derecha"
+  And el sistema no permite listar las Marcas disponibles para seleccionar
 
