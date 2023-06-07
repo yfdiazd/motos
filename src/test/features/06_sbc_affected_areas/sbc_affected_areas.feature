@@ -4,14 +4,14 @@
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
   When El usuario hace clic en el boton "Volver"
   Then El sistema regresa al usuario a la pantalla de "Datos basicos" para consultar la informacion diligenciada
-  And El sistema muestra habilitado el formulario para realiza edicion de informacion
+  And El sistema muestra habilitado el formulario para realizar edicion de informacion
   When El usuario modifica el taller
-  And  Hace clic en el boton continuar
+  And  Hace clic en el boton "Continuar"
   Then El sistema lo redirecciona nuevamente a la pantalla de "Zonas Afectadas"
 
 
 #2 Ajustar criterio para especificar tamaño permitido, formato porque en el criterio dice pdf pero la aplicacion
-  #permite jpg, jpeg, png, mostrar a lore que no es claro que el botón continuar no se active porque falta subir fotos
+  #permite  jpg, jpeg, png,mostrar a lore que no es claro que el botón continuar no se active porque falta subir fotos
   #también revisar con lore para ajustar porque el mensaje en galeria de fotos es redundante. Ademas el criterio dice que se permite por lateralidad y eso no es asi en motos y limite de fotos sin limite?
 
   Scenario: Validar cargue de documentos en los formatos permitidos

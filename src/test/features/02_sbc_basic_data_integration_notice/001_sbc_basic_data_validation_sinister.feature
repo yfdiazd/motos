@@ -7,7 +7,7 @@
   Then El sistema muestra el campo "Nro de Siniestro" con el valor "Sin Nro de Siniestro"
   And El campo "Nro de Siniestro" está deshabilitado para edicion
   When El usuario completa el formulario de datos básicos
-  And hace clic en el boton continuar
+  And hace clic en el boton "Continuar"
   Then El sistema valida el campo "Nro de Siniestro" como válido
   When El usuario avanza a la pantalla de "Detalle de Valoracion"
   Then El sistema muestra el campo "Nro de Siniestro" con el valor "Sin Nro de Siniestro"
@@ -40,7 +40,7 @@
   When El usuario avanza a la pantalla de "Detalle de Valoracion"
   Then El sistema muestra el campo "Nro de Siniestro" con el numero de siniestro asociado al aviso
 
-#4
+#4 ******AJUSTAR 4 y 5
   Scenario: El aviso no tenia numero de siniestro y se edito para asociar numero de siniestro
 
   Given Que el aviso en estado "Sin valorar" fue editado para asociar el numero de siniestro
@@ -48,7 +48,7 @@
   Then El sistema muestra el campo "Nro de Siniestro" con el nuevo numero de siniestro asociado al aviso
   And El campo "Nro de Siniestro" esta deshabilitado para edicion
   When El usuario completa el formulario de datos basicos
-  And hace clic en el boton continuar
+  And hace clic en el boton "Continuar"
   Then El sistema valida el campo "Nro de Siniestro" como valido
   When El usuario avanza a la pantalla de "Detalle de Valoracion"
   Then El sistema muestra el campo "Nro de Siniestro" con el numero de siniestro asociado al aviso

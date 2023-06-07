@@ -6,9 +6,13 @@
   Then  El sistema consume el servicio de IA con el "numero de vin", el "pais" y el "tipo de vehiculo"
   And  IA encuentra coincidencia exacta
   Then El sistema muestra la marca asociada al VIN en el campo "Marca"
+  And  no puede ser valor vacio
   And  El sistema muestra la linea asociada al VIN en el campo "Linea"
+  And  no puede ser valor vacio
   And  El sistema muestra la Version asociada al VIN en el campo "Version"
+  And  no puede ser valor vacio
   And  El sistema muestra el Año de vehículo asociado al VIN en el campo "Modelo"
+  And  no puede ser valor vacio
   And  El sistema muestra el valor comercial asociado al VIN en el campo "Valor comercial"
   When   El usuario diligencia los demas campos del formulario datos basicos
   And  hace clic en el boton continuar
@@ -25,18 +29,24 @@ Scenario: Validacion VIN OCR con Coincidencia Exacta 17 caracteres en pais difer
   Then  El sistema consume el servicio de IA con el "numero de vin", el "pais" y el "tipo de vehiculo"
   And   IA encuentra coincidencia exacta en pais diferente al buscado
   Then El sistema muestra la marca asociada al VIN en el campo "Marca"
+  And  no puede ser valor vacio
   And  El sistema muestra la linea asociada al VIN en el campo "Linea"
+  And  no puede ser valor vacio
   And  El sistema muestra la Version asociada al VIN en el campo "Version"
+  And  no puede ser valor vacio
   And  El sistema muestra el Año de vehículo asociado al VIN en el campo "Modelo"
+  And  no puede ser valor vacio
   And  El sistema muestra el valor comercial en cero
-  And  El sistema permite modificar el valor comercial
-  When el usuario ingresa el valor comercial del vehiculo en el campo "Valor comercial"
-  And   diligencia los demas campos del formulario datos basicos
+  When El usuario completa la informacion de datos basicos
   And  hace clic en el boton "Continuar"
-  Then   El sistema redirecciona a la pantalla de "Zonas afectadas"
+  Then   El sistema valida que el campo "Valor comercial no pueda ser cero"
+  And muestra el mensaje: "El valor comercial debe ser mayor a cero"
+  When El usuario ingresa valor comercial diferente de cero
+  And hace clic en el boton "Continuar"
+  Then El sistema redirecciona a la pantalla de "Zonas afectadas"
   And  Asigna identificador que permita determinar que el vin fue reconocido
 
-#3 Consultar duda valor comercial a Rodri porque se entrega desde marca.
+#3
 
 Scenario: Validacion Reconocimiento Parcial VIN 11 caracteres para el pais buscado
 
