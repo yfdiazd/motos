@@ -152,7 +152,3 @@
   When el usuario cambia la accion del repuesto ingresado a "Cambiar"
   Then el sistema habilita para edicion el campo "Precio"
   And oculta la opcion "nivel de danio" y habilita el campo "cantidades"
-
-
-
-
