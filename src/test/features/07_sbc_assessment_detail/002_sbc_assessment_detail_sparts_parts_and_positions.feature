@@ -24,12 +24,10 @@
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And no se visualiza la tabla de repuestos
-  When el usuario ingresa el nombre del <repuesto> a buscar en el buscador de repuestos
-  Then el sistema muestra la lista de los repuestos con la coincidencia buscada
-  When el usuario hace clic sobre el repuesto encontrado en la lista
-  Then el sistema carga el repuesto en la tabla de repuestos con la accion "Reparar" por defecto
-  And  muestra el tipo de golpe "Leve" por defecto
-  And  muestra el check de "Agrupar" encendido por defecto
+  When el usuario ingresa una pieza
+  Then el sistema carga la pieza en la tabla de repuestos con la accion "Reparar" por defecto
+  And  muestra el tipo de golpe "L" por defecto
+  And  muestra el switch de "Agrupar" encendido por defecto
   And el campo precio se visualiza deshabilitado para ingresar el precio en la accion Reparar
   And el campo precio muestra la moneda por <pais> y el valor "0.00" , no permite editarse
   And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto en la accion "Reparar"
@@ -37,7 +35,11 @@
   When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
   Then el sistema habilita el campo "Precio" para ser diligenciado permaneciendo visible la moneda del <pais>
   And el sistema habilita el campo "Cantidad" para modificar la cantidad de repuesto
-  And el sistema mantiene encendido por default el check "Agrupar"
+  And el sistema mantiene encendido por default el switch "Agrupar"
+
+# 4
+  Scenario: Validar cambio de repuestos de "Reparar" a "Remover"
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
 
 
 
