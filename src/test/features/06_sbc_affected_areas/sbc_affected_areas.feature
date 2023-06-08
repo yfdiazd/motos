@@ -15,8 +15,7 @@
   #también revisar con lore para ajustar porque el mensaje en galeria de fotos es redundante. Ademas el criterio dice que se permite por lateralidad y eso no es asi en motos y limite de fotos sin limite?
 
 
-  #Fernanda debe ajustar este caso porque ya no se bloquea continuar , las fotos son opcionales.***********************
-  Scenario: Validar cargue de documentos en los formatos permitidos
+   Scenario: Validar cargue de documentos y fotografias en los formatos permitidos
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
   When El usuario hace clic en el cargue de documentos
@@ -31,8 +30,6 @@
   Then El sistema muestra la lista de los documentos con nombre, extension, el nombre del usuario que lo cargo con el respectivo <Rol>
   And El sistema muestra por cada documento la fecha y hora en que fue agregado
   And El sistema muestra disponible los botones "Eliminar" y "Descargar" por cada documento
-  When El usuario hace clic en el boton "Continuar" **********************ajustar paso
-  Then El sistema no ejecuta ninguna accion porque el boton "Continuar" se encuentra deshabilitado
   When El usuario hace clic en el tab  "Galeria de fotos"
   Then El sistema muestra activo el boton "Subir fotografias"
   When El usuario hace clic en el botón "Subir fotografias"
@@ -155,20 +152,18 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   #existan fotografías en cualquiera de los dos tabs , cambiar criterio donde dice que continuar lleva a detalle del aviso
   # es necesario reajustar todos los criterios de zonas afectadas.
 
-  ###### Fernanda ajustar caso porque ya no son obligatorias las fotograficas sino los documentos **********************
-  Scenario: Validar cargue de fotografias sin documentos en zonas afectadas
+   Scenario: Validar cargue de documentos sin fotografias en zonas afectadas
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
-  And la valoracion no tiene asociados documentos
-  When El usuario hace clic en el tab "Galeria de fotos"
-  Then El sistema muestra activo el boton "Subir fotografias"
-  When El usuario hace clic en el botón "Subir fotografias"
+  When El usuario hace clic en el cargue de documentos
   Then El sistema abre el explorador de archivos
   When El usuario selecciona los <documentos> a cargar
   And  El usuario hace clic en el boton "Abrir"
-  Then El sistema muestra el mensaje "Las imágenes se cargaron de manera correcta, en la pestaña de galería puedes visualizar las imágenes."
-  When El usuario hace clic en el boton "x" del pop up
-  Then El sistema cierra el pop up
-  When El usuario hace clic en el boton "Continuar"
-  Then El sistema  guarda los cambios realizados en la pantalla "Zonas Afectadas"
+  Then El sistema muestra el mensaje "Los documentos se cargaron de manera correcta, en la pestaña de documentos puedes visualizarlos."
+  When El usuario pulsa el boton "Cerrar" en el pop up
+  Then El pop up se cierra
+  And  El sistema deja al usuario en el mismo tab de "Cargue de documentos"
+  And habilita el boton "Continuar"
+  When el usuario hace clic en el boton "Continuar"
+  Then el sistema direcciona al usuario a la pantalla de "Detalle de Valoracion" sin necesidad de subir fotografias
 
