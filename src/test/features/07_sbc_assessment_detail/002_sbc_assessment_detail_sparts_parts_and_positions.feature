@@ -1,33 +1,58 @@
-#1
-Scenario: Redireccionamiento a pantallas anteriores al hacer clic en el boton "Volver"
+  #1 - funcionalidad Agregar repuestos
+  Scenario: Validar la opcion para poder agregar piezas en "Detalle de valoracion"
+
+  Given que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla "Detalle valoracion" desde la pantalla "Detalle aviso"
+  Then el sistema muestra el campo "Agregar repuestos" el cual permite agregar nuevas piezas
+  When el usuario ingresa la pieza a buscar
+  Then el sistema lista piezas que contienen el valor ingresado en el campo
+  When el usuario selecciona la pieza del listado
+  Then el sistema la agrega a la tabla de piezas, con la accion reparar y nivel de danio "L" por defecto
+  And el campo de "Precio" con el valor cero acompañado por el tipo de moneda del <pais>
+
+
+  #2 - funcionalidad Agregar repuestos ya existentes en la tabla#
+  Scenario: Validar control de duplicidad de piezas
+
+  Given el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla "Detalle valoracion" desde el boton "Ir"
+  And existe piezas en la tabla de repuestos
+  When el usuario busca una pieza existente en el buscador de repuestos
+  Then el sistema lista las piezas que contienen el valor ingresado en el buscador
+  And excluye la <pieza> exactamente buscada
+
+  #3
+  Scenario: Validar cambio de repuestos de "Reparar" a "Cambiar"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
-  When El usuario hace clic en el boton "Volver"
-  Then El sistema regresa al usuario a la pantalla de "Zonas afectadas" para consultar la informacion diligenciada
-  And Permite cargar nuevamente fotografias y documentos
-  When el usuario hace clic en el boton "Volver" de "Zonas afectadas"
-  Then El sistema regresa al usuario a la pantalla de "Datos basicos" para consultar la informacion diligenciada
-  And El sistema muestra habilitado el formulario para realizar edicion de informacion
-  When El usuario modifica el numero del VIN a traves del OCR
-  And El sistema reconoce el VIN
-  Then  El sistema carga nuevamente la informacion del vehiculo asociada al VIN, Marca, Linea, Version Modelo y Valor Comercial
-  And El sistema mantiene diligenciado los demas campos que no se han editado
-  When El usuario modifica la carroceria
-  And hace clic en el boton "Continuar"
-  Then El sistema lo redirecciona nuevamente a la pantalla de "Zonas Afectadas"
-  And muestra en la pestana de fotografias la imagen de la tarjeta de propiedad cargada
-  And muestra las otras fotografias y documentos cargados previamente
-  When El usuario hace clic en el boton "Continuar"
-  Then El sistema direcciona al usuario a la pantalla "Detalle Valoracion"
-  And muestra disponible la informacion actualizada del VIN en los campos "VIN", "Marca", "Linea", "Version", "Ano", "Valor comercial" y "Tipo de vehiculo"
-  When El usuario completa la informacion de la valoracion
-  And hace clic en el boton "Guardar"
-  Then el sistema muestra mensaje: ""
-  And se habilita el boton "Finalizar"
-  When el usuario hace clic en el boton "Finalizar"
-  Then El sistema direcciona al usuario al "Detalle del aviso"
-  And  el estado del aviso cambia a "Pendiente Ajuste"
-  And  se visualiza la informacion de los campos "Placa Tercero", "Placa Asegurado" , "Marca", "Linea", "Version", "Ano", "Valor comercial", "Porcentaje perdida", "Valor de mano de obra", "Valor de repuestos", "Ciudad del taller" y "Taller" de acuerdo a la informacion de la valoracion
+  And no se visualiza la tabla de repuestos
+  When el usuario ingresa el nombre del <repuesto> a buscar en el buscador de repuestos
+  Then el sistema muestra la lista de los repuestos con la coincidencia buscada
+  When el usuario hace clic sobre el repuesto encontrado en la lista
+  Then el sistema carga el repuesto en la tabla de repuestos con la accion "Reparar" por defecto
+  And  muestra el tipo de golpe "Leve" por defecto
+  And  muestra el check de "Agrupar" encendido por defecto
+  And el campo precio se visualiza deshabilitado para ingresar el precio en la accion Reparar
+  And el campo precio muestra la moneda por <pais> y el valor "0.00" , no permite editarse
+  And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto en la accion "Reparar"
+  And el campo "Ref" se visualiza habilitado si el <pais> esta configurado para trabajar con referencias, sino no deberia visualizarse este campo
+  When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
+  Then el sistema habilita el campo "Precio" para ser diligenciado permaneciendo visible la moneda del <pais>
+  And el sistema habilita el campo "Cantidad" para modificar la cantidad de repuesto
+  And el sistema mantiene encendido por default el check "Agrupar"
+
+
+
+  # 3 validar comportamiento con Lore que se oculte de las piezas TOT el campo Agrupar
+  # que deberia pasar con el campo cantidad de las TOT
+  Scenario: Validar cambio de repuestos de "Reparar" a TOT
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+  And existe repuestos cargados en la tabla de repuestos con accion "Reparar"
+  When el usuario selecciona una pieza con accion "Reparar"
+  And cambia la accion a "TOT"
+  Then el sistema oculta el campo "Tipo de golpe"
+  And  se mantiene deshabilitado el campo precio
+  And se oculta el switch "Agrupar"
+
 
 
   #2 sesion 07-06-2023 Falta criterio  para indicar que no se tiene en cuenta control de cantidades de IA, reparar lleva los 3 tipos de golpe
@@ -44,7 +69,7 @@ Scenario: Redireccionamiento a pantallas anteriores al hacer clic en el boton "V
   And  muestra el tipo de golpe "Leve" por defecto
   And  muestra el check de "Agrupar" encendido por defecto
   And el campo precio se visualiza deshabilitado para ingresar el precio en la accion Reparar
-  And el campo precio muestra la moneda por <pais> y el valor "0"
+  And el campo precio muestra la moneda por <pais> y el valor "0.00" , no permite editarse
   And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto en la accion "Reparar"
   And el campo "Ref" se visualiza habilitado si el <pais> esta configurado para trabajar con referencias, sino no deberia visualizarse este campo
   When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
@@ -61,10 +86,12 @@ Scenario: Redireccionamiento a pantallas anteriores al hacer clic en el boton "V
   Then el sistema muestra nuevamente el precio en cero
   And recalcula el valor de repuestos
   When el usuario hace clic en el boton "Guardar"
-  Then el sistema guarda la informacion diligenciada
+  Then el sistema muestra el mensaje: "Los cambios fueron realizados"! y guarda la informacion diligenciada
   And el estado del aviso continua en "Sin Valorar"
   When el usuario sale de la pantalla "Detalle Valoracion"
-  And accede nuevamente a la pantalla de "Detalle Valoracion" desde el boton "Ir" en la bandeja de avisos
+  And accede nuevamente a la valoracion desde el boton "Ir"
+  Then el sistema direcciona a la pantalla "Tipo de vehiculo"
+  When el usuario avanza hasta la pantalla "Detalle valoracion" haciendo clic en el boton "Continuar"
   Then el sistema muestra la informacion que el usuario habia diligenciado
 
 Example:
@@ -72,24 +99,42 @@ Example:
 |Irs Motos https://docs.google.com/spreadsheets/d/1epoow7B10pgjJrVfO-wbOlw7TxT4vGdL/edit#gid=1854025519|
 
 #3 validar con lore porque en pesados en detalle no oculta el campo pero en crud si , cómo deberia funcionar?
+  # **********validar con lore si cuando se pasa de remover a reparar y en reparar se habia seleccionado un tipo de golpe deberia cagar ese o el por default
+  #pregunta si yo tengo una pieza que estaba apagada con el agrupar y le cambio la accion deberia quedarse apagada o quedar con el agrupar prendido por default?, actualmente lo deja como estaba guardado
+# validar con lore si cuando hay una pieza con cantidad > 1 y se pasa a reparar deberia mantener la cantidad . En este momento la resetea a 1.
   Scenario:  Validar carga de repuestos de accion "Reparar" con diferentes tipos de golpe y accion "Remover"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe repuestos cargados en la tabla de repuestos con accion "Reparar"
   And el tipo de golpe es "L" por default
+  And el switch de "Agrupar" se encuentra encendido
   When el usuario hace clic en el campo "Tipo de golpe"
   Then el sistema despliega las opciones "L", "M", y "F"
   When el usuario cambia el tipo de golpe a "M"
-  And  hace clic en el boton "Guardar
-  Then el sistema guarda el cambio realizado sobre la pieza
+  And  hace clic en el boton "Guardar"
+  Then el sistema muestra el mensaje: "Los cambios fueron realizados"
+  And guarda el cambio realizado sobre la pieza
   When el usuario selecciona otra pieza con accion "Reparar" y la cambia a accion "Remover"
   Then el sistema oculta el campo "Tipo de golpe"
   And  se mantiene deshabilitado el campo precio
-  And se mantiene prendido por default el check de "Agrupar"
-  And no afecta el valor de repuestos
+  And se mantiene el switch "Agrupar" con el estado que tenia la pieza
   When el usuario cambia la accion de la pieza de "Remover" a "Reparar"
-  Then el sistema habilita nuevamente el tipo de golpe con la opcion previamente registrada **********validar con lore si se debe mostrar
-  And no afecta el valor de repuestos
+  Then el sistema habilita nuevamente el tipo de golpe con la opcion previamente registrada
+  When el usuario cambia el tipo de golpe a "F"
+  And  hace clic en el boton "Guardar"
+  Then el sistema muestra el mensaje: "Los cambios fueron realizados"
+  And guarda el cambio realizado sobre la pieza
+  When el usuario selecciona una pieza de accion "Remover"
+  And hace cambio de accion a "Cambiar"
+  Then el sistema habilita el campo "Precio"
+  When el usuario ingresa el precio en el campo "Precio"
+  And hace clic en el boton "Agrupar"
+  Then el sistema inactiva la opcion "Agrupar"
+  And el sistema recalcula el valor de repuestos en el campo "Valor de repuestos" teniendo en cuenta el nuevo precio ingresado por la cantidad
+  When el usuario cambia la accion de la pieza de "Cambiar" a "Remover"
+  Then el sistema deshabilita el campo "Precio" con el valor cero por defecto
+
+
 
 
 # 4  Pendiente revisar como va a funcionar el seleccionar todos.********************************************************

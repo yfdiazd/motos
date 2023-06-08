@@ -52,10 +52,10 @@
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   And no diligencia ningun campo
-  When El usuario hace clic en el boton "Continuar"
-  Then El sistema no recibe ninguna accion porque el boton esta deshabilitado
-  And  El sistema muestra el label "Este campo es requerido" para los campos obligatorios
-  And  El sistema muestra el label "Ingresa mínimo 3 caracteres" , "El valor debe ser mayor a cero" en el campo "Valor comercial"
+  Then el sistema muestra deshabilitado el boton "Continuar" hasta que se complete todos los campos obligatorios
+  When el usuario completa la informacion de datos basicos pero el valor comercial es = 0
+  And el usuario hace clic en el boton "Continuar"
+  Then el sistema muestra el mensaje: "El valor debe ser mayor a cero" en el campo "Valor comercial"
 
 #5 Falta criterio
   Scenario: Validacion <Tipos de carroceria> por <Aseguradora>
