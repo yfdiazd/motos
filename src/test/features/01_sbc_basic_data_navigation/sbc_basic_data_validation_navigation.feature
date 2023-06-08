@@ -29,7 +29,7 @@
   |Sura Chile|
 
 #2
-  Scenario: Boton continuar guarda la informacion de datos basicos
+  Scenario: Boton "Continuar" guarda la informacion de datos basicos
 
   Given Que el usuario con <Rol> de la <Aseguradora>  ingresa a la pantalla de datos basicos
   When El usuario diligencia el formulario de datos básicos
@@ -38,7 +38,7 @@
   When El usuario da clic en el boton "Volver"
   Then El sistema regresa a la pantalla de datos basicos mostrando toda la información diligenciada
 
-#3 Falta criterio
+#3 Falta criterio y validar con vic replanteamiento de cara al manejo del bloqueo del aviso
   Scenario: Boton "Continuar" en la pantalla de datos basicos solo debe permitirse accionar una unica vez
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos

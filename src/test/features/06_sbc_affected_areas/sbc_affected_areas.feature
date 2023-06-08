@@ -14,6 +14,8 @@
   #permite  jpg, jpeg, png,mostrar a lore que no es claro que el botón continuar no se active porque falta subir fotos
   #también revisar con lore para ajustar porque el mensaje en galeria de fotos es redundante. Ademas el criterio dice que se permite por lateralidad y eso no es asi en motos y limite de fotos sin limite?
 
+
+  #Fernanda debe ajustar este caso porque ya no se bloquea continuar , las fotos son opcionales.***********************
   Scenario: Validar cargue de documentos en los formatos permitidos
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
@@ -29,7 +31,7 @@
   Then El sistema muestra la lista de los documentos con nombre, extension, el nombre del usuario que lo cargo con el respectivo <Rol>
   And El sistema muestra por cada documento la fecha y hora en que fue agregado
   And El sistema muestra disponible los botones "Eliminar" y "Descargar" por cada documento
-  When El usuario hace clic en el boton "Continuar"
+  When El usuario hace clic en el boton "Continuar" **********************ajustar paso
   Then El sistema no ejecuta ninguna accion porque el boton "Continuar" se encuentra deshabilitado
   When El usuario hace clic en el tab  "Galeria de fotos"
   Then El sistema muestra activo el boton "Subir fotografias"
@@ -58,7 +60,7 @@
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
   And la valoracion ya tiene cargados documentos
   When El usuario hace clic  en el tab "Documentos"
-  Then muestra la lista de los documentos con nombre, extension, el nombre del usuario que lo cargo con el respectivo <Rol>
+  Then el sistema muestra la lista de los documentos con nombre, extension, el nombre del usuario que lo cargo con el respectivo <Rol>
   And El sistema muestra disponible los botones "Eliminar" y "Descargar" por cada documento
   When El usuario hace clic en el boton "Eliminar" del documento que desea eliminar
   Then El sistema muestra el pop up "Eliminar documentos" con el mensaje:"¿Está seguro de que deseas eliminar el documento?"
@@ -88,10 +90,10 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   Then muestra la lista de los documentos con nombre, extension, el nombre del usuario que lo cargo con el respectivo <Rol>
   And El sistema muestra disponible los botones "Eliminar" y "Descargar" por cada documento
   When El usuario hace clic en el boton "Descargar"
-  Then El sistema descarga el documento seleccionado
+  Then El sistema descarga el documento seleccionado en el equipo
 
 
-#6
+#6 Falta criterio
   Scenario: Validar cargue de documentos en formatos no permitidos
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
@@ -99,7 +101,7 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   Then El sistema abre el explorador de archivos
   When El usuario selecciona los archivos en formatos no permitidos para los <documentos>
   And  El usuario hace clic en el boton "Abrir"
-  Then El sistema muestra el mensaje "El tipo del archivo es invalido.Formato de documento e imagen permitido: pdf, png, jpg, jpeg"
+  Then El sistema muestra el mensaje "El tipo del archivo es invalido.Formato de documento e imagen permitido: pdf, png, jpg, jpeg, pdf"
   When El usuario pulsa el boton "Cerrar" en el pop up
   Then El pop up se cierra
   When El usuario hace clic en el tab Documentos
@@ -112,6 +114,7 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   Scenario: Validar maximo de documentos permitidos para cargue
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
+  And la valoracion tiene cargados 5 archivos en el tab "Documentos"
   When El usuario hace clic en el cargue de documentos
   Then El sistema abre el explorador de archivos
   When El usuario selecciona los <documentos> a cargar
@@ -122,7 +125,7 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   When El usuario hace clic en el tab Documentos
   Then El sistema lista los documentos cargados
 
-# 8
+# 8 falta criterio Ajustar caso porque las fotografías son opcionales**************************************************
   Scenario: Eliminar fotos en tab "Galeria de fotos"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
@@ -152,6 +155,7 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   #existan fotografías en cualquiera de los dos tabs , cambiar criterio donde dice que continuar lleva a detalle del aviso
   # es necesario reajustar todos los criterios de zonas afectadas.
 
+  ###### Fernanda ajustar caso porque ya no son obligatorias las fotograficas sino los documentos **********************
   Scenario: Validar cargue de fotografias sin documentos en zonas afectadas
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
