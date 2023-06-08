@@ -52,21 +52,19 @@ Scenario: Validacion Reconocimiento Parcial VIN 11 caracteres para el pais busca
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   When  el usuario digita el numero de <VIN> en el campo VIN
-  And completa la informacion del VIN con "0" hasta completar los 17 caracteres
+  And completa la informacion del VIN con "0" a la derecha hasta completar los 17 caracteres
   Then  El sistema consume el servicio de IA con los parametros "numero de vin", "pais" y "tipo de vehiculo"
   And   IA encuentra coincidencia parcial en el pais buscado
-  Then El sistema muestra el listado de marcas disponibles para el tipo de vehiculo
-  And  El sistema solo permite seleccionar una marca
-  When  El usuario selecciona la marca
-  Then El sistema consume el servicio de IA con los parametros "numero de vin", "pais", "tipo de vehiculo" y "marca"
-  And  IA entrega el listado de lineas disponibles
-  And  El sistema solo permite seleccionar una linea
-  When  El usuario selecciona la linea
-  Then El sistema consume el servicio de IA con los parametros "numero de vin", "pais","tipo de vehiculo",  "marca" y "linea"
-  And  IA entrega el listado de Modelos
-  And  El sistema solo permite seleccionar un Modelo
-  When  El usuario selecciona el Modelo
-  Then El sistema muestra el valor comercial asociado a la marca, linea, version y modelo del vehiculo
+  Then El sistema muestra la marca asociada al VIN en el campo "Marca"
+  And  no puede ser valor vacio
+  And  El sistema muestra la linea asociada al VIN en el campo "Linea"
+  And  no puede ser valor vacio
+  And  El sistema muestra la Version asociada al VIN en el campo "Version"
+  And  no puede ser valor vacio
+  And  El sistema muestra el año "1950"
+  And  permite ser modificado
+  And  El sistema muestra el valor comercial del vehiculo
+  And permite ser modificado
   When   El usuario diligencia los demas campos del formulario datos basicos
   And  hace clic en el boton continuar
   Then   El sistema redirecciona a la pantalla de zonas afectadas
@@ -88,24 +86,21 @@ Examples:
   And completa la informacion del VIN con "0" hasta completar los 17 caracteres
   Then  El sistema consume el servicio de IA con los parametros "numero de vin", "pais" y "tipo de vehiculo"
   And   IA encuentra coincidencia parcial en otro pais diferente al buscado
-  Then El sistema muestra el listado de marcas disponibles para el tipo de vehiculo
-  And  El sistema solo permite seleccionar una marca
-  When  El usuario selecciona la marca
-  Then El sistema consume el servicio de IA con los parametros "numero de vin", "pais", "tipo de vehiculo" y "marca"
-  And  IA entrega el listado de lineas disponibles
-  And  El sistema solo permite seleccionar una linea
-  When  El usuario selecciona la linea
-  Then El sistema consume el servicio de IA con los parametros "numero de vin", "pais","tipo de vehiculo",  "marca" y "linea"
-  And  IA entrega el listado de Anos
-  And  El sistema solo permite seleccionar un Modelo
-  When  El usuario selecciona el Modelo
-  Then El sistema no identifica valor comercial para el pais buscado porque el vin fue reconocido parcial en otro pais
-  And  El sistema antepone el prefijo de moneda y permite modificar la informacion del campo valor comercial
-  When El usuario ingresa el valor comercial
-  And  diligencia los demas campos del formulario datos basicos
-  And  hace clic en el boton "Continuar"
+  Then El sistema muestra la marca asociada al VIN en el campo "Marca"
+  And  no puede ser valor vacio
+  And  El sistema muestra la linea asociada al VIN en el campo "Linea"
+  And  no puede ser valor vacio
+  And  El sistema muestra la Version asociada al VIN en el campo "Version"
+  And  no puede ser valor vacio
+  And  El sistema muestra el año "1950"
+  And  permite ser modificado
+  And  El sistema muestra el valor comercial del vehiculo en cero
+  And permite ser modificado
+  When   El usuario diligencia los demas campos del formulario datos basicos
+  And  hace clic en el boton continuar
   Then   El sistema redirecciona a la pantalla de zonas afectadas
   And  Asigna identificador que permita determinar que el vin fue digitado
+
 
 
 #5
