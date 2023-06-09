@@ -57,7 +57,7 @@
   Then El sistema abre el explorador de archivos
   When El usuario selecciona los <documentos> a cargar
   And  El usuario hace clic en el boton "Abrir"
-  Then El sistema muestra el mensaje "Las imágenes se cargaron de manera correcta, en la pestaña de galería puedes visualizar las imágenes."
+  Then El sistema muestra el mensaje "Las imágenes se subieron correctamente"
   When El usuario hace clic en el boton "x" del pop up
   Then El sistema cierra el pop up
   And  habilita el boton "Continuar"
@@ -121,7 +121,8 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   Then El sistema lista los documentos cargados
   And El sistema no muestra el documento que se intentó cargar en formato diferente
 
-
+#4
+  Scenario: Validar tab "Cargue fotografias"
 
 #7
   Scenario: Validar maximo de documentos permitidos para cargue
@@ -148,7 +149,7 @@ Scenario: Validar cancelacion eliminacion de documentos cargados
   Then El sistema abre el explorador de archivos
   When El usuario selecciona los <documentos> a cargar
   And  El usuario hace clic en el boton "Abrir"
-  Then El sistema muestra el mensaje "Las imágenes se cargaron de manera correcta, en la pestaña de galería puedes visualizar las imágenes."
+  Then El sistema muestra el mensaje "Las imágenes se subieron correctamente."
   When El usuario hace clic en el boton "x" del pop up
   Then El sistema cierra el pop up
   When El usuario hace click sobre el boton "x" de la fotografia

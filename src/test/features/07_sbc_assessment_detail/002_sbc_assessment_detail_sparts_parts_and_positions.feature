@@ -1,11 +1,15 @@
     #2 sesion 07-06-2023 Falta criterio  para indicar que no se tiene en cuenta control de cantidades de IA, reparar lleva los 3 tipos de golpe
   #referencia va ir prametrizado por pais, campo unidades en accion reparar se deshabilita
-  #validar con lore si cuando ingrese desde el boton ir o valorar y la valoracion ya se encuentre en detalle si va a ir directamente al detalle o si sigue iniciando desde datos basicos#3 validar con lore porque en pesados en detalle no oculta el campo pero en crud si , cómo deberia funcionar?
-  # **********validar con lore si cuando se pasa de remover a reparar y en reparar se habia seleccionado un tipo de golpe deberia cagar ese o el por default
-  #pregunta si yo tengo una pieza que estaba apagada con el agrupar y le cambio la accion deberia quedarse apagada o quedar con el agrupar prendido por default?, actualmente lo deja como estaba guardado
-# validar con lore si cuando hay una pieza con cantidad > 1 y se pasa a reparar deberia mantener la cantidad . En este momento la resetea a 1.
 
-# 4  Pendiente revisar como va a funcionar el seleccionar todos.********************************************************
+      #falta ajustar en criterios
+  #13-06-2023 cuando se pulse boton ir desde bandeja o valorar desde detalle va a ir directamente a detalle del aviso y permite regresarse, esto si el usuario ya se encontraba en detalle del aviso
+  #13-06-2023# cuando se cambie de reparar a cualquier otra accion se debe ocultar el campo tipo de golpe,
+  #13-06-2023 cuando se ha cambiado el tipo de golpe y no se ha guardado, se cambia a otra accion y luego vuelve a reparar debe volver a cargar el valor guardado en bd
+  #13-06-2023#pregunta si yo tengo una pieza que estaba apagada con el agrupar y le cambio la accion deberia quedarse apagada o quedar con el agrupar prendido por default?, actualmente lo deja como estaba guardado. Rta se mantiene como esta
+#13-06-2023 validar con lore si cuando hay una pieza con cantidad > 1 y se pasa a reparar deberia mantener la cantidad . En este momento la resetea a 1. Se mantiene como esta
+#13-06-2023 sino se ha pulsado guardar no debe registrarse cambios.
+#13-06-2023 seleccionar todos deberia comportarse igual a livianos y pesados, elimina toda la tabla
+
 
   #1 - funcionalidad Agregar repuestos
   Scenario: Validar la opcion para poder agregar piezas en "Detalle de valoracion"
@@ -40,17 +44,20 @@
   Then el sistema carga la pieza en la tabla de repuestos con la accion "Reparar" por defecto
   And  muestra el tipo de golpe "L" por defecto
   And  muestra el switch de "Agrupar" encendido por defecto
-  And el campo precio se visualiza deshabilitado para ingresar el precio en la accion Reparar
-  And el campo precio muestra la moneda por <pais> y el valor "0.00" , no permite editarse
-  And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto en la accion "Reparar"
+  And el campo precio se visualiza deshabilitado para ingresar informacion
+  And  muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra deshabilitado para modificar la cantidad del repuesto
   And el campo "Ref" se visualiza habilitado si el <pais> esta configurado para trabajar con referencias, sino no deberia visualizarse este campo
   When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
   Then el sistema habilita el campo "Precio" para ser diligenciado permaneciendo visible la moneda del <pais>
   And el sistema habilita el campo "Cantidad" para modificar la cantidad de repuesto
   And el sistema mantiene encendido por default el switch "Agrupar"
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
 
-  #4 -Funcionalidad cambio de accion "Reparar" a "Remover"
-  # pendiente validar con lore el switch agrupar cuando se cambia de accion la pieza si ya estaba apagado
+  #4 -Funcionalidad cambio de accion "Reparar" a "Remover". Pdte  criterio
   Scenario: Validar cambio de accion en piezas de "Reparar" a "Remover"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
@@ -59,11 +66,16 @@
   Then el sistema oculta el campo  tipo de golpe
   And  muestra el switch de "Agrupar" con el estado previamente seleccionado
   And el campo precio se visualiza deshabilitado para ingresar el precio
-  And el campo precio muestra la moneda por <pais> y el valor "0.00" , no permite editarse
-  And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto
+  And el campo precio muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra habilitado para modificar la cantidad del repuesto
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
 
-  # 5-Funcionalidad cambio de accion "Reparar a TOT"
-  # Falta criterio con lorena porque las TOT no aplica agrupamiento, el campo unidades deberia dejarse modificar para TOT, al ser un servicio deberia ser 1?
+
+  # 5-Funcionalidad cambio de accion "Reparar a TOT". Falta criterio
+
   Scenario: Validar cambio de accion de piezas en "Reparar a "TOT"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
@@ -72,19 +84,29 @@
   Then el sistema oculta el campo tipo de golpe
   And  se oculta el switch "Agrupar"
   And el campo precio se visualiza deshabilitado para ingresar el precio
-  And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto
+  And el campo "Cantidades" se muestra habilitado para modificar la cantidad del repuesto
+  When el usuario modifica el campo Cantidad
+  And hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
 
-  #7-Funcionalidad cambio de accion "Cambiar a "Reparar"
+  #6-Funcionalidad cambio de accion "Cambiar a "Reparar". Pdte criterio
   Scenario: Validar cambio de accion de piezas en "Cambiar" a "Reparar"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Cambiar"
   When el usuario cambia la accion de la pieza de "Cambiar" a "Reparar"
-  Then el sistema deshabilita el campo unidades y lo resetea a 1
+  Then el sistema deshabilita el campo "Cantidades" y lo resetea a 1
   And muestra el campo tipo de golpe con la opcion guardada inicialmente
   And se deshabilita el campo precio  con el valor cero acompañado por el tipo de moneda del <pais>
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
 
-  #8-Funcionalidad cambio de accion "Cambiar a "TOT"
+
+  #7-Funcionalidad cambio de accion "Cambiar a "TOT" . Pdte criterio
   Scenario: Validar cambio de accion de piezas en "Cambiar" a "TOT"
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
@@ -93,21 +115,118 @@
   Then el sistema oculta el campo tipo de golpe
   And  se oculta el switch "Agrupar"
   And el campo precio se visualiza deshabilitado para ingresar el precio
-  And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto
+  And el campo "Cantidades" se muestra habilitado para modificar la cantidad del repuesto
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
 
-  #9-Funcionalidad cambio de accion "Cambiar a "Remover" VOY ACA
-    Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover"
+  #8-Funcionalidad cambio de accion "Cambiar a "Remover" . Pdte criterio
+  Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover"
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+  And existe piezas en la tabla de repuestos con accion "Cambiar"
+  When el usuario cambia la accion de la pieza de "Cambiar" a "Remover"
+  Then el sistema oculta el campo tipo de golpe
+  And  muestra el switch de "Agrupar" con el estado previamente seleccionado
+  And el campo precio se visualiza deshabilitado para ingresar el precio
+  And se muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra habilitado para modificar la cantidad del repuesto
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
+
+  #9-Funcionalidad cambio de accion "TOT a "Cambiar" . Pdte criterio
+
+  Scenario: Validar cambio de accion en piezas de "TOT" a "Cambiar"
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+  And existe piezas en la tabla de repuestos con accion "TOT"
+  When el usuario cambia la accion de la pieza de "TOT" a "Cambiar"
+  Then el sistema muestra el switch de "Agrupar" con el estado previamente seleccionado
+  And no se visualiza el campo tipo de golpe
+  And el campo precio se visualiza habilitado para ingresar el precio
+  And se muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra habilitado con la cantidad registrada previamente
+  And permite modificar la cantidad del repuesto
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
+
+
+  #10-Funcionalidad cambio de accion "TOT a "Reparar" . Pdte criterio
+
+  Scenario: Validar cambio de accion en piezas de "TOT" a "Reparar"
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+  And existe piezas en la tabla de repuestos con accion "TOT"
+  When el usuario cambia la accion de la pieza de "TOT" a "Reparar"
+  Then el sistema muestra el campo tipo de golpe con la opcion guardada previamente
+  And el sistema muestra el switch de "Agrupar" con el estado previamente seleccionado
+  And el campo precio se visualiza deshabilitado para editar
+  And se muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra deshabilitado para modificar la cantidad del repuesto y se resetea a 1
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
+
+  #11-Funcionalidad cambio de accion "TOT a "Remover" . Pdte criterio
+
+  Scenario: Validar cambio de accion en piezas de "TOT" a "Remover"
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+  And existe piezas en la tabla de repuestos con accion "TOT"
+  When el usuario cambia la accion de la pieza de "TOT" a "Remover"
+  Then el sistema muestra el switch de "Agrupar" con el estado previamente seleccionado
+  And no se visualiza el campo tipo de golpe
+  And el campo precio se visualiza deshabilitado para ingresar el precio
+  And se muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra habilitado con la cantidad registrada previamente
+  And permite modificar la cantidad del repuesto
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
+
+  #12-Funcionalidad cambio de accion "Remover a "Reparar" . Pdte criterio
+
+  Scenario: Validar cambio de accion en piezas de "Remover" a "Reparar"
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+  And existe piezas en la tabla de repuestos con accion "Remover"
+  When el usuario cambia la accion de la pieza de "Remover" a "Reparar"
+  Then el sistema muestra el campo tipo de golpe con la opcion guardada previamente
+  And el sistema muestra el switch de "Agrupar" con el estado previamente seleccionado
+  And el campo precio se visualiza deshabilitado para editar
+  And se muestra la moneda por <pais> y el valor "0.00"
+  And el campo "Cantidades" se muestra deshabilitado para modificar la cantidad del repuesto y se resetea a 1
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And  guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
+
+ #13-Funcionalidad cambio de accion "Remover a "TOT" . Pdte criterio
+
+    Scenario: Validar cambio de accion en piezas de "Remover" a "TOT"
 
     Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
-    And existe piezas en la tabla de repuestos con accion "Cambiar"
-    When el usuario cambia la accion de la pieza de "Cambiar" a "Remover"
-    Then el sistema oculta el campo oculta el tipo de golpe
-    And  muestra el switch de "Agrupar" con el estado previamente seleccionado
+    And existe piezas en la tabla de repuestos con accion "Remover"
+    When el usuario cambia la accion de la pieza de "Remover" a "TOT"
+    Then el sistema no muestra el switch de "Agrupar"
+    And no se visualiza el campo tipo de golpe
     And el campo precio se visualiza deshabilitado para ingresar el precio
-    And el campo precio muestra la moneda por <pais> y el valor "0.00" , no permite editarse
-    And el campo "Unidades" se muestra deshabilitado para modificar la cantidad del repuesto
+    And se muestra la moneda por <pais> y el valor "0.00"
+    And el campo "Cantidades" se muestra habilitado con la cantidad registrada previamente
+    And permite modificar la cantidad del repuesto
+    When el usuario hace clic en el boton "Guardar"
+    Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+    And  guarda los cambios realizados
+    And  mantiene la misma posicion de la pieza en base de datos
 
-  # 6- Funcionalidad eliminar piezas
+  # - Funcionalidad eliminar piezas . Pdte criterio
   Scenario: Validar eliminacion de pieza para cada <Accion>
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
@@ -122,8 +241,13 @@
   When el usuario hace clic nuevamente en el boton "Eliminar"
   Then el siste muestra el pop up con el mensaje: "¿ Estás seguro de que deseas eliminar la información ?"
   When el usuario hace clic en el boton "Ok"
-  Then el sistema quita la pieza de la tabal de repuestos
-
+  Then el sistema quita la pieza de la tabla de repuestos
+  And los cambios solo se guardan cuando el usuario pulsa el boton "Guardar" de lo contrario no debe guardarse los cambios
+  When el usuario hace clic en el boton "Guardar"
+  Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
+  And el sistema guarda los cambios realizados
+  And  mantiene la misma posicion de la pieza en base de datos
+  And la pieza queda marcada con eliminar en "True"
 
 
   Example:
@@ -169,11 +293,14 @@
   Then el sistema muestra la pagina de repuestos seleccionada
 
   #9 - Funcionalidad paginador cantidad de paginas cuando se elimina todos los repuestos
+      #validar con Lore que sucede si cuando la tabla esta vacía se pulsa el boton guardar
 
   Scenario: Validar cantidad de paginas cuando se elimina todos los repuestos
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And la tabla de repuestos tiene varias paginas organizadas en items de 10 por default
-  When el usuario  elimina todos los repuestos
+  When el usuario  selecciona todos los repuestos
+  And hace clic en el boton "Eliminar"
   Then el sistema muestra la tabla de repuestos vacia
   And la cantidad de paginas del paginador es 1
 
