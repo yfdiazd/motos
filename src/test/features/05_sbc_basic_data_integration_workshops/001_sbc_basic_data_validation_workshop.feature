@@ -26,7 +26,7 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
   When El usuario completa el formulario de datos básicos
   And hace clic en el boton "Continuar"
   Then El sistema ubica al usuario en la pantalla "Zonas afectadas"
-  When El usuario carga las fotografias
+  When El usuario carga los documentos
   And hace clic en el boton "Continuar"
   Then El sistema ubica al usuario en la pantalla "Detalle Valoracion"
   And  muestra el "Taller" actualizado y "Ciudad de taller" asociado al aviso
@@ -96,10 +96,23 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
 
 # 6 vamos a dejar vacio y se va a mostrar mensaje para indicar al usuario que seleccione el taller de motos ************
 
-  Scenario: Validar informacion de "Ciudad del taller" y "Taller" asociado en la creacion del aviso cuando no corresponde al tipo de vehiculo "Moto"
+  Scenario: Validar informacion de "Ciudad del taller" y "Taller" asociado en la creacion del aviso cuando el taller no corresponde al tipo de vehiculo "Moto"
 
   Given Que el aviso en estado "Sin valorar" tiene asociado un "Taller" que no pertenece al tipo de vehiculo "Moto"
   And tiene asociada la "Ciudad del taller"
   When El usuario con <Rol> de la <Aseguradora> ingresa al formulario datos basicos
-  Then El sistema muestra el campo "Taller" con el taller asociado al aviso
+  Then El sistema muestra el campo "Taller" vacío para que el usuario asigne el taller
+  And muestra el mensaje: "Seleccione un taller de motos"
   And  El sistema muestra el campo "Ciudad del taller" con la ciudad del taller al que se encuentra asociado el aviso
+  When el usuario selecciona el taller
+  And completa la informacion de datos basicos
+  And hace clic en el boton "Continuar"
+  Then el sistema avanza a la pantalla de "Zonas afectadas"
+  When el usuario avanza a la pantalla "Detalle de valoracion"
+  Then el sistema muestra en el campo Taller, el taller asociado desde datos basicos y en el campo "Ciudad del taller" la ciudad asociada al aviso
+  When el usuario sale de la pantalla sin guardar
+  And accede a la bandeja de avisos
+  Then el sistema muestra en la bandeja el taller asociado al aviso desde datos basicos
+  And muestra el historico de taller vinculado al aviso.
+
+
