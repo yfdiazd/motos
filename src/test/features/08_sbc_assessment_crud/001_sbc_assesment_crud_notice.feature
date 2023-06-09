@@ -124,7 +124,6 @@
   |Pendiente Aceptación|
 
     #6 - funcionalidad Agregar repuestos ya existentes en la tabla
-  # valdiar que mensaje se expone al cargar una pieza que ya existe?
   Scenario: Validar el control de duplicidad de piezas
   Given que se tiene un aviso en estado <estado>
   When el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla "Crud" desde la pantalla "Detalle aviso"
@@ -141,6 +140,19 @@
   |pendiente autorizacion|
   |Pendiente Conciliación|
   |Pendiente Aceptación|
+
+  #7 funcionalidad botones eliminar
+  Scenario: Validar la opcion para eliminar repuestos
+  Given que se tiene un aviso en estado <estado>
+  When el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla "Crud" desde el boton "Ir"
+  Then el sistema muestra sobre la tabla de repuestos el boton "Eliminar"
+  When el usuario selecciona repuestos de la tabla marcandolos con el campo "Check" o selecciona el campo "Seleccionar todos" tipo check
+  And pulsa el boton "Eliminar"
+  Then el sistema muestra el mensaje: "¿ Estas seguro de que deseas eliminar la informacion ?" de confirmacion con el boton "Aceptar"
+  When el usuario pulsa el boton aceptar
+  Then elimina los repuestos seleccionados previamente
+
+
 
     # x
   Scenario validar cambio de accion de "Reparar" a "Cambiar"
