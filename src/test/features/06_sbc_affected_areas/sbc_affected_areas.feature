@@ -15,7 +15,7 @@
   #también revisar con lore para ajustar porque el mensaje en galeria de fotos es redundante. Ademas el criterio dice que se permite por lateralidad y eso no es asi en motos y limite de fotos sin limite?
 
 
-   Scenario: Validar cargue de documentos y fotografias en los formatos permitidos
+  Scenario: Validar cargue de documentos y fotografias en los formatos permitidos
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
   When El usuario hace clic en el cargue de documentos
@@ -26,10 +26,31 @@
   When El usuario pulsa el boton "Cerrar" en el pop up
   Then El pop up se cierra
   And  El sistema deja al usuario en el mismo tab de "Cargue de documentos"
+  And habilita el boton "Continuar"
+  When el usuario hace clic en el boton "Continuar"
+  Then el sistema permite avanzar a "Detalle Valoracion"
+
+  Examples:
+  |documentos|
+  |jpg|
+  |jpeg|
+  |png|
+  |pdf|
+
+  #3
+  Scenario: Validar tab "Documentos"
+
+  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Zonas afectadas"
+  And existe documentos cargados
   When El usuario hace clic en el tab de "Documentos"
   Then El sistema muestra la lista de los documentos con nombre, extension, el nombre del usuario que lo cargo con el respectivo <Rol>
   And El sistema muestra por cada documento la fecha y hora en que fue agregado
   And El sistema muestra disponible los botones "Eliminar" y "Descargar" por cada documento
+
+
+
+
+
   When El usuario hace clic en el tab  "Galeria de fotos"
   Then El sistema muestra activo el boton "Subir fotografias"
   When El usuario hace clic en el botón "Subir fotografias"
@@ -43,12 +64,7 @@
   When El usuario hace clic en el boton "Continuar"
   Then El sistema redireccional usuario a la pantalla de "Detalle valoracion".
 
-  Examples:
-  |documentos|
-  |jpg|
-  |jpeg|
-  |png|
-  |pdf|
+
 
 #3
 
