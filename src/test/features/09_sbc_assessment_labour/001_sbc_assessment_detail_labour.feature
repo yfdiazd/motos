@@ -34,7 +34,7 @@ And el campo no permite ser editado por el usuario
 Scenario: Validar comportamiento cuando en campo Ajustes en Horas se ingrese valor negativo superior a Orbika
 
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
-And  y el usuario ingrese un <valor_no_permitido> en campo "Ajuste horas"
+When el usuario ingrese un <valor_no_permitido> en campo "Ajuste horas"
 Then el sistema deja el campo en "0"
 And no modifica valor en campo "Horas de Trabajo"
 
@@ -45,11 +45,17 @@ And no modifica valor en campo "Horas de Trabajo"
   |-10|
 
  #5
-Scenario: Validar comportamiento cuando en el campo Ajustes en Horas se ingrese valor positivo igual a Valor Orbika en negativo
+Scenario: Validar comportamiento cuando en el campo Ajustes en Horas se ingrese valor igual a Valor Orbika en negativo
 
-Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
-And  y el usuario ingrese un <valor> en campo "Ajustes en horas" igual al valor "Horas Orbika"
-Then el sistema muestra permite en Campo "Horas de Trabajo" 0
+Given Que el usuario con <Rol> de Aseguradora se encuentra en la pantalla "Mano de Obra"
+When  y el usuario ingrese un <valor> en campo "Ajustes en horas" en carrocería igual al valor "Horas Orbika" en negativo
+Then el sistema recalcula las "Horas de Trabajo" en "0"
+And el valor de carrocería se recalcula a "0, sino hay operaciones de control
+And si hay operaciones de control, solo debe mostrar el valor correspondiente a las horas de las operaciones de control de carroceria seleccionadas
+When  y el usuario ingrese un <valor> en campo "Ajustes en horas" en mecatrónica igual al valor "Horas Orbika" en negativo
+Then el sistema recalcula las "Horas de Trabajo" en "0"
+And el valor de mecatrónica se recalcula a "0, sino hay operaciones de control
+And si hay operaciones de control, solo debe mostrar el valor correspondiente a las horas de las operaciones de control de mecatrónica seleccionadas
 
 #Validar con Lore cual es el valor máximo que debe permitir Ajuste en horas
 #o si este campo no tiene limite superior (como en pesados) que se deja 1000000 h y permite
@@ -58,19 +64,19 @@ Then el sistema muestra permite en Campo "Horas de Trabajo" 0
 Scenario: Validar comportamiento cuando en el campo Ajustes en Horas se ingrese valor positivo superior a Orbika
 
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
-And  y el usuario ingrese un <valor> en campo "Ajustes en horas"
-Then el sistema muestra en los campos carrocería y mecatronica la tarifa configurada
-And modifica valor en campo "Horas de Trabajo"
+When el usuario ingrese un <valor> en campo "Ajustes en horas"
+Then el sistema muestra en los campos valor total carrocería y mecatronica el valor ajustado
+
 
 #Falta incluir criterio, pendiente de validar con Lore las horas para cada operación
 #Validar con Lore si se va a dejar palabra Valor total mecánica o valor total mecatrónica
  #6
-Scenario: Validar valor total para carrocería  y mecatronica cuando se selecciona operación de control asociada a carrocería
+Scenario: Validar valor total para carrocería  y mecatronica cuando se selecciona operación de control
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
-When la sección de operaciones de control se encuentra habilitada para los roles de aseguradora
-And se marquen <operaciones_carroceria> de control asociadas a carrocería
-And se marquen <operaciones_mecanica> de control asociadas a mecanica
-Then el sistema muestra en los campos Valor total carrocería y mecatronica el incremento de valor
+When el usuario selecciona las <operaciones_carrocería>
+Then el sistema recalcula el Valor total carroceria
+When el usuario seleccione las <operaciones_mecatronica>
+Then el sistema recalcula el Valor total mecatronica
 
 
 Examples:
@@ -90,3 +96,35 @@ Examples:
 #0-40 % Azul
 #41-60 % Naranja
 #61-100 % Rojo (no puede superar el 100%)
+
+  #7
+Scenario: Validar comportamiento del sistema al hacer clic botón "Volver"
+Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
+And ha realizado modificaciones en horas u operaciones de control
+When el usuario haga clic en el botón "Volver"
+Then el sistema dirige al usuario al detalle del aviso
+And no realiza guardado de los cambios realizados
+
+#8
+Scenario: Validar comportamiento del sistema al hacer clic botón "Guardar"
+Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
+And ha realizado modificaciones en horas u operaciones de control
+When el usuario haga clic en el botón "Guardar"
+Then el sistema permite guardar los cambios
+And dirige a la pantalla del detalle de la valoración
+
+#9
+Scenario: Validar comportamiento del botón "Descartar"
+Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
+And ha realizado modificaciones en horas u operaciones de control
+Then el sistema cambia el valor del botón "Atrás" por "Descartar"
+When el usuario haga clic en el botón "Descartar"
+Then el sistema omite los cambios realizados
+And deja al usuario en la pantalla de mano de obra
+
+#10
+Scenario: Validar comportamiento del botón "Atrás"
+Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
+And no ha realizado modificaciones en horas u operaciones de control
+When el usuario haga clic en el botón "Atrás"
+Then el sistema dirige al usuario al detalle del aviso
