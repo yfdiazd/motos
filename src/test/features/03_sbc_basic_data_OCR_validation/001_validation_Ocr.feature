@@ -3,7 +3,7 @@
 
   Given que el usuario con  <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   When el usuario hace clic en el campo para cargar la imagen de la tarjeta de propiedad
-  Then el sistema muestra el explorador de archivos de windows para seleccionar el archivo de tipo <Formato>
+  Then el sistema muestra el explorador de archivos de archivos para seleccionar el archivo de tipo <Formato>
   When el usuario hace clic en la imagen
   And el usuario hace clic en el boton "Abrir" del explorador de archivos
   Then El sistema procesa la imagen mediante OCR para extraer el numero VIN
@@ -37,10 +37,13 @@ Examples:
 
   Given que el usuario con  <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   When el usuario carga una imagen que excede el <tamanio permitido>
-  Then El sistema muestra el mensaje "El archivo supera el tamaño permitido".
-  And se muestra el mensaje:"Cargar de nuevo"
+  Then El sistema muestra el mensaje "El archivo supera el peso permitido".
+  And se muestra el mensaje:"Intentalo de nuevo"
 
   Examples:
   |tamano permitido|
   |10MB|
+
+  #5
+  #caso para que la tarjeta no sea visible cuando no se lee.
 

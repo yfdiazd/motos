@@ -370,3 +370,4 @@
   And se muestra el mensaje: "Ingresa hasta cinco notas en la valoración"
   And se muestra la caja de comentarios con el texto "
 
+
