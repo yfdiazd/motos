@@ -47,12 +47,13 @@
   Then El sistema debe bloquear el boton
   And no permitir que se accione, incluso si el usuario esta en otra pestaña o navegador
 
-# 4 Falta criterio cambio nuevo
+# 4 Cambio ajustado
   Scenario: Validación de campos obligatorios en el formulario datos basicos
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
   And no diligencia ningun campo
-  Then el sistema muestra deshabilitado el boton "Continuar" hasta que se complete todos los campos obligatorios
+  Then el sistema muestra habilitado el boton "Continuar"
+  And si se acciona el boton se debe señalar los campos obligatorios para su diligenciamiento
   When el usuario completa la informacion de datos basicos pero el valor comercial es = 0
   And el usuario hace clic en el boton "Continuar"
   Then el sistema muestra el mensaje: "El valor debe ser mayor a cero" en el campo "Valor comercial"
@@ -79,3 +80,18 @@
   |Custom|
   |Triciclo / Cuatriciclo|
   |Moto carro|
+
+
+  #6 redireccionamiento a paso en proceso
+  Scenario: validacion de retomar proceso de valoracion al ultimo paso guardado
+  Given Que el usuario abandona la valoracion en el <Paso>
+  When se ingresa nuevamente a la valoracion
+  Then se debe retomar el paso de la valoracion previamente avandonado.
+  |Paso|
+  |Tipo de vehiculo|
+  |Datos basicos|
+  |Zonas afectadas|
+  |Detalle valoracion|
+
+
+

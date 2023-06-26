@@ -2,34 +2,33 @@
   Scenario: Validacion VIN 17 caracteres con Coincidencia Exacta
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
-  When  el usuario digita el numero de VIN en el campo VIN
-  Then  El sistema consume el servicio de IA
-  And  IA encuentra coincidencia exacta
-  Then El sistema muestra la marca asociada al VIN en el campo "Marca"
-  And  no puede ser valor vacio
-  And  El sistema muestra la linea asociada al VIN en el campo "Linea"
-  And  no puede ser valor vacio
-  And  El sistema muestra la Version asociada al VIN en el campo "Version"
-  And  no puede ser valor vacio
-  And  El sistema muestra el Año de vehículo asociado al VIN en el campo "Modelo"
-  And  no puede ser valor vacio
-  And  El sistema muestra el valor comercial  asociado a la Marca , Linea, Version y Modelo en el campo "Valor comercial"
-  And  si el valor comercial es = 0
-  Then el sistema muestra el mensaje: "El valor debe ser mayor a cero"
-  When   El usuario diligencia los demas campos del formulario datos basicos
-  And  hace clic en el boton continuar
-  Then El sistema persiste la informacion de la valoracion
+  When  el usuario digita el numero de <VIN> en el campo VIN
+  Then El sistema muestra los datos del vehiculo pertenecientes al VIN
+  And El sistema persiste la informacion de la valoracion
   And  identifica si el vin fue digitado o leido por OCR
-  And avanza a la pantalla de "Zonas afectadas"
+  |VIN|
+  |KMHD741CBHU050542|
+  |KMHCT41BAGU901748|
+  |MPATFS86JGT002164|
+  |MALA741CBKM303212|
+  |KMHCT51BAGU240317|
+  |KNABX512BET629669|
 
-  #2  Falta criterio
+  #2Sebas
   Scenario: Validacion VIN menor a 17 digitos
+  al ingresar el vin menor a 17 caracteres, no se debe hacer llamado al modelo de vin
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
-  When  el usuario digita el numero de <VIN> en el campo VIN con valor menor a 17 caracteres
+  When  el usuario digita el numero de <VIN> en el campo VIN
   Then  El sistema  valida el VIN ingresado
-  And muestra el mensaje: "Por favor complete 17 caracteres ingresando '0' a la derecha"
-  And el sistema no permite listar las Marcas disponibles para seleccionar
+  And muestra el mensaje: "Ingresa 17 caracteres - Completa con ceros a la derecha."
+  And no permite listar datos de vehiculos
+
+  Examples:
+  |VIN|
+  |123456|
+  |09876534526|
+  |12345678901234567|
 
   #3
 
