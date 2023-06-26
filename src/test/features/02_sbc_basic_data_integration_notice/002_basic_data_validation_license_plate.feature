@@ -10,7 +10,7 @@
   And avanza a la pantalla de "Detalle de Valoracion"
   Then El sistema muestra en el campo "Placa Tercero" la placa del tercero asociada al aviso
 
-  #2 Falta ajustar figma para cambiar el orden de los campos, falta en criterio
+  #2 falta en criterio
   Scenario: Validar campo placa en "Datos basicos" y "Detalle Valoracion" cuando cobertura es diferente a RC
 
   Given Que el aviso a valorar tiene asociada la <Cobertura>
