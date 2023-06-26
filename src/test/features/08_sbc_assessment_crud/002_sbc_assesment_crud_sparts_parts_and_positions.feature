@@ -1,207 +1,343 @@
-#1
-Scenario: Eliminar repuestos en el proceso de ajuste independientemente si se enviaron o no a compras
+  #1
+  Scenario: Eliminar repuestos en el proceso de ajuste independientemente si se enviaron o no a compras
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion en estado <estado>
-When el usuario selecciona la pieza con <accion> a eliminar y la elimina
-Then el sistema solicita confirmacion al usuario: "¿ Estas seguro de que deseas eliminar la informacion ?"
-When el usuario confirma la eliminacion
-Then el sistema elimina los repuestos seleccionados previamente del listado de repuestos
-And guarda los cambios de la eliminacion al finalizar los ajustes sobre la misma posicion <posicion> de la pieza
+  Guardado de la pieza: La posicion de la pieza en la bd debe marcarse como eliminada, no enviada a cotizar, ni enviada a administracion
+  Posibles cambios de accion de la pieza: Fila 64-71 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
-Examples:
-|accion|
-|reparar|
-|remover|
-|cambiar|
-|Tot|
-
-Examples:
-|estado|
-|Pendiente ajuste *
-|Ajustado| *
-|Pendiente Aceptacion|*
-|Actualizar Siniestro|*
-|Pendiente conciliacion|*
-|Pendiente Autorizacion|*
-|Autorizado|*
-
-|Pendiente Aceptacion|Eliminada: True, Envio_cotizar: False, Envio_Administracion: False|
-|Ajustado|Eliminada: True, Envio_cotizar: False, Envio_Administracion: False|
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion en estado <estado>
+  When el usuario desea eliminar una pieza con <accion>
+  Then deberia visualizar una alerta de confirmacion
+  And poder elegir si confirma o no la eliminacion
 
 
-#2
-Scenario: Sistema no permite finalizar valoracion sin piezas en el listado de repuestos
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion en estado <estado>
-When elimina todos los repuestos del listado de repuestos
-And  intenta finalizar la valoracion
-Then el sistema alerta al usuario con el mensaje:"Debes agregar minimo un repuesto para guardar la valoracion"
-And no permite avanzar con el proceso
+  Examples:
+  |accion|
+  |reparar|
+  |remover|
+  |cambiar|
+  |Tot|
 
-#3
+  Examples:
+  |estado|
+  |Pendiente ajuste *
+  |Ajustado| *
+  |Pendiente Aceptacion|*
+  |Actualizar Siniestro|*
+  |Pendiente conciliacion|*
+  |Pendiente Autorizacion|*
+  |Autorizado|*
 
-Scenario: Buscar pieza no existente en listado para avisos en estados <estado> previos a la autorizacion
-
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion
-And el <estado> del aviso es previo a la "Autorizacion"
-When el usuario busca una pieza en el buscador de repuestos
-Then el sistema lista las piezas que contienen el valor buscado
-And permite seleccionar la pieza buscada
-
-Examples:
-|estado|
-|Pendiente ajuste *
-|Ajustado| *
-|Pendiente Aceptacion|*
-|Actualizar Siniestro|*
-|Pendiente conciliacion|*
-|Pendiente Autorizacion|*
-
-#4
-Scenario: Validar control de duplicidad de piezas
-
-Given el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion
-When el usuario busca una pieza existente en el buscador de repuestos
-Then el sistema lista las piezas que contienen el valor ingresado en el buscador
-And excluye la pieza exactamente buscada
-
-#5
-Scenario: Agregar pieza en el proceso de ajuste de la valoracion para avisos en estados <estado> previos a la autorizacion
-
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion para un aviso en estado <estado>
-And desea agregar una pieza al listado de repuestos
-When el usuario busca y selecciona la pieza
-Then el sistema agrega la pieza al listado de repuestos, con la accion reparar y nivel de danio "L" por defecto, switch de Agrupacion activo
-And no permite ingresar precio ni cantidades, si permite ingresar referencia
-And guarda los cambios  al finalizar los ajustes asignando una nueva posicion unica para la pieza
-
-Example:
-|pieza|
-|Irs Motos https://docs.google.com/spreadsheets/d/1epoow7B10pgjJrVfO-wbOlw7TxT4vGdL/edit#gid=1854025519|
-
-#6
-Scenario: Validar cambio de accion en piezas de "Reparar" a "Cambiar" pieza existente en listado no enviada a compras
-
-Precondition: Existe piezas en la tabla de repuestos con accion "Reparar" no enviada a compras en acciones anteriores
-
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
-Then el sistema permite ingresar el precio, modificar las cantidades del repuesto, ingresar la referencia
-And  no muestra el tipo de golpe y muestra el switch de agrupacion con el estado guardado en la accion anterior de la pieza
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion <posicion> para la pieza
-
-Examples:
-|estado|Posicion|
-|pendiente ajuste|
-|Ajustado|Eliminada: False, Envio_cotizar: False, Envio_Administracion: False|
-|Pendiente Aceptacion|Eliminada: False, Envio_cotizar: False, Envio_Administracion: False|
-|Actualizar Siniestro|
-|Pendiente conciliacion|
-|Pendiente Autorizacion|
+  |Pendiente Aceptacion||
+  |Ajustado|Eliminada: True, Envio_cotizar: False, Envio_Administracion: False|
 
 
-#7
-Scenario: Validar cambio de accion en piezas de "Reparar" a "Remover" pieza existente en listado no enviada a compras
+  #2
+  Scenario: Usuario <Rol> no deberia poder ajustar la valoracion sin minimo una pieza cargada en cualquier accion <accion>
 
-Precondition: Existe piezas en la tabla de repuestos con accion "Reparar" no enviada a compras en acciones anteriores
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion en estado <estado>
+  When elimina todos los repuestos del listado de repuestos
+  And  intenta finalizar la valoracion
+  Then no deberia poder finalizar el proceso porque debe tener minimo una pieza cargada independiente de la accion <accion> de la pieza
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "Reparar" a "Remover"
-Then el sistema no muestra el tipo de golpe, no permite ingresar precio
-And permite modificar la referencia, las cantidades y muestra el switch de agrupacion con el estado guardado en la accion anterior de la pieza
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
+  #3
 
-Examples:
-|estado|
-|Pendiente Aceptacion|
-|Ajustado|
+  Scenario: Buscar pieza no existente en listado de repuestos para avisos en estado <estado> previo a la autorizacion
 
-#8
-Scenario: Validar cambio de accion de piezas en "Reparar a "TOT" pieza existente en listado no enviada a compras
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion
+  And el <estado> del aviso es previo a la "Autorizacion"
+  When el usuario busca una pieza en el buscador de repuestos
+  Then deberia visualizar las piezas que contienen el valor buscado
+  And deberia poder seleccionar la pieza buscada
 
-Precondition: Existe piezas en la tabla de repuestos con accion "Reparar" no enviada a compras en acciones anteriores
+  Examples:
+  |estado|
+  |Pendiente ajuste
+  |Ajustado|
+  |Pendiente Aceptacion|
+  |Actualizar Siniestro|
+  |Pendiente conciliacion|
+  |Pendiente Autorizacion|
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "Reparar" a "TOT"
-Then el sistema permite  modificar las cantidades del repuesto
-And  no muestra el tipo de golpe, precio, referencia y el switch de agrupacion
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
+  #4
+  Scenario: Validar control de duplicidad de piezas
 
-Examples:
-|estado|
-|Pendiente Aceptacion|
-|Ajustado|
+  Given el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion
+  When el usuario busca una pieza en el buscador de repuestos
+  And la pieza ya existe en el listado de repuestos
+  Then el usuario deberia poder visualizar las piezas que continen el valor buscado excluyendo  la pieza exactamente buscada
 
-#9
-Scenario: Validar cambio de accion de piezas en "Cambiar" a "Reparar" pieza existente en listado no enviada a compras
+  #5
+  Scenario: Agregar pieza en el proceso de ajuste de la valoracion para avisos en estados <estado> previos a la autorizacion
 
-Precondition: Existe piezas en la tabla de repuestos con accion "Cambiar" no enviada a compras
+  Guardado de la pieza: La pieza cargada deberia generar una nueva posicion unica en la base de datos
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "Cambiar" a "Reparar"
-Then el sistema muestra nuevamente el tipo de golpe con la opcion guardada inicialmente, permite modificar la referencia
-And el precio se resetea a 0 y no permite modificarse, las cantidades se resetean a valor 1
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion para un aviso en estado <estado>
+  And desea agregar una pieza al listado de repuestos
+  When el usuario busca y selecciona la pieza
+  Then el usuario deberia visualizar la pieza en el listado de repuestos, con la accion reparar, agrupada y nivel de danio "L" por defecto
+  And no deberia poder modificar precio, cantidad ni referencia
 
-Examples:
-|estado|
-|Pendiente Aceptacion|
-|Ajustado|
+  Example:
+  |pieza|
+  |Irs Motos https://docs.google.com/spreadsheets/d/1epoow7B10pgjJrVfO-wbOlw7TxT4vGdL/edit#gid=1854025519|
 
-#11-
-Scenario: Validar cambio de accion de piezas en "Cambiar" a "TOT" pieza existente en listado no enviada a compras
-
-Precondition: Existe piezas en la tabla de repuestos con accion "Cambiar" no enviada a compras
-
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "Cambiar" a "TOT"
-Then el sistema permite  modificar las cantidades del repuesto, la referencia
-And  oculta el switch de agrupamiento, no muestra tipo de golpe, no permite modificar el precio y lo resetea a 0
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
-
-Examples:
-|estado|
-|Pendiente Aceptacion|
-|Ajustado|
-
-#12- Ajustar en figma
-Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover" pieza existente en listado no enviada a compras
-
-Precondition: Existe piezas en la tabla de repuestos con accion "Cambiar" no enviada a compras
-
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "Cambiar" a "Remover"
-Then el sistema mantiene visible el switch de agrupamiento con el estado guardado previamente, permite modificar la referencia y las cantidades de repuesto
-And  no muestra el tipo de golpe, no permite modificar el precio y lo resetea a 0
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
-
-Examples:
-|estado|
-|Pendiente Aceptacion|
-|Ajustado|
+  #6
+  Scenario: Validar cambio de accion en piezas de "Reparar" a "Cambiar" pieza existente en listado no enviada a compras
+  Guardado de la pieza: la pieza deberia mantener la misma posicion en la base de datos y marcarse como no eliminada, no enviada a cotizar, ni enviada a administracion
+  Posibles cambios de accion de la pieza: "TOT"-> "Reparar"->"Cambiar".Filas 47 y 62 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
 
-#13-
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Reparar" en el listado de repuestos no enviada a compras en acciones anteriores
+  When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
+  Then deberia visualizar la agrupacion de la pieza con el estado que tenia asignado
+  And no deberia visualizar tipo de golpe
+  And deberia poder modificar  el precio, la referencia, la cantidad del repuesto
 
-Scenario: Validar cambio de accion en piezas de "TOT" a "Cambiar" pieza existente en listado no enviada a compras
 
-Precondition: Existe piezas en la tabla de repuestos con accion "TOT" no enviada a compras
+  Examples:
+  |estado|Posicion|
+  |pendiente ajuste|
+  |Ajustado|Eliminada: False, Envio_cotizar: False, Envio_Administracion: False|
+  |Pendiente Aceptacion|Eliminada: False, Envio_cotizar: False, Envio_Administracion: False|
+  |Actualizar Siniestro|
+  |Pendiente conciliacion|
+  |Pendiente Autorizacion|
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "TOT" a "Cambiar"
-Then el sistema muestra el switch de "Agrupar" con el estado anteriormente guardado, permite modificar cantidad, precio y referencia
-And  no muestra el tipo de golpe
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
 
-#14-
-Scenario: Validar cambio de accion en piezas de "TOT" a "Reparar" pieza existente en listado no enviada a compras
+  #7
+  Scenario: Validar cambio de accion en piezas de "Reparar" a "Remover" pieza existente en listado no enviada a compras
 
-Precondition: Existe piezas en la tabla de repuestos con accion "TOT" no enviada a compras
+  Guardado de la pieza: la pieza deberia mantener la misma posicion en la base de datos  y marcarse como no eliminada, no enviada a cotizar, ni enviada a administracion
+  Regla de negocio 1: Para las piezas de remocion el precio es 0.00
+  Regla de negocio 2: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
+  Posibles cambios de accion de la pieza: Fila 48 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
-Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
-When el usuario cambia la accion de la pieza de "TOT" a "Reparar"
-Then el sistema muestra el campo tipo de golpe con la opcion guardada previamente,muestra el switch agrupar con el estado guardado previamente,permite modificar la referencia
-And no permite modificar precio y lo muestra en 0, no permite modificar cantidad y lo resetea a 1
-And  guarda los cambios  al finalizar los ajustes, manteniendo la misma posicion para la pieza
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Reparar" en el listado de repuestos no enviada a compras en acciones anteriores
+  When el usuario cambia la accion de la pieza de "Reparar" a "Remover"
+  Then deberia poder modificar la agrupacion y la cantidad del repuesto
+  And no deberia visualizar tipo de golpe, referencia ni modificar el precio de la pieza
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  Examples:
+  |estado|
+  |Pendiente Aceptacion|
+  |Ajustado|
+
+
+
+  #8
+  Scenario: Validar cambio de accion de piezas en "Reparar a "TOT" pieza existente en listado no enviada a compras
+  Guardado de la pieza: la pieza deberia mantener la misma posicion en la base de datos  y marcarse como no eliminada, no enviada a cotizar, ni enviada a administracion
+  Posibles cambios de accion de la pieza: "Cambiar"-> "Reparar"->"TOT". Filas 49 y 59 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+  Regla de negocio 1: Para las piezas TOT el precio es 0.00 hasta que se reciba el precio del proceso de cotizacion y compra
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Reparar" en el listado de repuestos no enviada a compras en acciones anteriores
+  When el usuario cambia la accion de la pieza de "Reparar" a "TOT"
+  Then el usuario deberia poder modificar la cantidad del repuesto
+  And no deberia visualizar el tipo de golpe, referencia, agrupacion, ni modificar el precio
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  Examples:
+  |estado|
+  |Pendiente Aceptacion|
+  |Ajustado|
+
+  #9
+  Scenario: Validar cambio de accion de piezas en "Cambiar" a "Reparar" pieza existente en listado no enviada a compras
+
+  Guardado de la pieza: la pieza deberia mantener la misma posicion en la base de datos  y marcarse como no eliminada, no enviada a cotizar, ni enviada a administracion
+  Regla de negocio 1: Cuando se cambia una pieza de Cambiar a Reparar , si la pieza ya tiene un precio se resetea a 0 y si la cantidad era mayor a 1 se resetea a 1
+  Posibles cambios de accion de la pieza: Fila 50 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Cambiar" en el listado de repuestos no enviada a compras
+  When el usuario cambia la accion de la pieza de "Cambiar" a "Reparar"
+  Then el usuario deberia visualizar nuevamente el tipo de golpe de la pieza con el nivel de danio guardado
+  And no deberia modificar el precio  ni la cantidad del repuesto, ni visualizar referencia
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  Examples:
+  |estado|
+  |Pendiente Aceptacion|
+  |Ajustado|
+
+  #10-
+  Scenario: Validar cambio de accion de piezas en "Cambiar" a "TOT" pieza existente en listado no enviada a compras
+
+  Guardado de la pieza: la pieza deberia mantener la misma posicion en la base de datos  y marcarse como no eliminada, no enviada a cotizar, ni enviada a administracion
+  Regla de negocio 1: Para las piezas TOT el precio es 0.00 hasta que se reciba el precio del proceso de cotizacion y compra
+  Posibles cambios de accion de la pieza: Fila 51 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Cambiar" en el listado de repuestos no enviada a compras
+  When el usuario cambia la accion de la pieza de "Cambiar" a "TOT"
+  Then el usuario deberia poder modificar la cantidad del repuesto
+  And no deberia visualizar el tipo de golpe, referencia, agrupacion, ni modificar el precio
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  Examples:
+  |estado|
+  |Pendiente Aceptacion|
+  |Ajustado|
+
+  #11- Ajustar en figma
+  Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover" pieza existente en listado no enviada a compras
+  Regla de negocio 1: Para las piezas de remocion el precio es 0.00
+  Regla de negocio 2: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
+  Posibles cambios de accion de la pieza: Fila 52 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Cambiar" en el listado de repuestos no enviada a compras
+  When el usuario cambia la accion de la pieza de "Cambiar" a "Remover"
+  Then deberia poder modificar la agrupacion y la cantidad del repuesto
+  And no deberia visualizar tipo de golpe, referencia ni modificar el precio de la pieza
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  Examples:
+  |estado|
+  |Pendiente Aceptacion|
+  |Ajustado|
+
+
+  #12-
+
+  Scenario: Validar cambio de accion en piezas de "TOT" a "Cambiar" pieza existente en listado no enviada a compras
+  Regla de negocio 1: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
+  Posibles cambios de accion de la pieza: Fila 53 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "TOT" en el listado de repuestos no enviada a compras
+  When el usuario cambia la accion de la pieza de "TOT" a "Cambiar"
+  Then deberia poder modificar la cantidad del repuesto, precio, referencia y agrupacion
+  And no deberia visualizar el tipo de golpe
+  And deberia guardar los cambios  al finalizar los ajustes
+
+
+  #13-
+  Scenario: Validar cambio de accion en piezas de "TOT" a "Reparar" pieza existente en listado no enviada a compras
+  Regla de negocio 1: Cuando se cambia una pieza de TOT a Reparar el precio se resetea a 0 y si la cantidad era mayor a 1 se resetea a 1
+  Posibles cambios de accion de la pieza: Fila 54 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "TOT" en el listado de repuestos no enviada a compras
+  When el usuario cambia la accion de la pieza de "TOT" a "Reparar"
+  Then el usuario deberia visualizar nuevamente el tipo de golpe de la pieza con el nivel de danio guardado
+  And no deberia modificar el precio  ni la cantidad del repuesto, ni visualizar referencia
+  And deberia guardar los cambios  al finalizar los ajustes
+
+
+  #14-
+
+  Scenario: Validar cambio de accion en piezas de "TOT" a "Remover" pieza existente en listado no enviada a compras
+  Regla de negocio 1: Para las piezas de remocion el precio es 0.00
+  Regla de negocio 2: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
+  Posibles cambios de accion de la pieza: Fila 55 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "TOT" en el listado de repuestos no enviada a compras
+  When el usuario cambia la accion de la pieza de "TOT" a "Remover" no enviada a compras
+  Then deberia poder modificar la agrupacion y la cantidad del repuesto
+  And no deberia visualizar tipo de golpe, referencia ni modificar el precio de la pieza
+  And deberia guardar los cambios  al finalizar los ajustes
+
+
+
+  #15-
+  Scenario: Validar cambio de accion en piezas de "Remover" a "Cambiar" pieza existente en listado no enviada a compras
+  Regla de negocio 1: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
+  Posibles cambios de accion de la pieza: "TOT"-> "Remover"->"Cambiar" .Filas 56 y 61 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Remover" en el listado de repuestos no enviada a compras en acciones anteriores
+  When el usuario cambia la accion de la pieza de "Remover" a "Cambiar"
+  Then deberia poder modificar la cantidad del repuesto, precio, referencia y agrupacion
+  And no deberia visualizar el tipo de golpe
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  #16-
+
+  Scenario: Validar cambio de accion en piezas de "Remover" a "Reparar" pieza existente en listado no enviada a compras
+  Regla de negocio 1: Cuando se cambia una pieza de Remover a Reparar si la cantidad era mayor a 1 se resetea a 1
+  Posibles cambios de accion de la pieza: Fila 57 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And existe una pieza con accion "Remover" en el listado de repuestos no enviada a compras en acciones anteriores
+  When el usuario cambia la accion de la pieza de "Remover" a "Reparar"
+  Then el usuario deberia visualizar nuevamente el tipo de golpe de la pieza con el nivel de danio guardado
+  And no deberia modificar el precio  ni la cantidad del repuesto, ni visualizar referencia
+  And deberia guardar los cambios  al finalizar los ajustes
+
+  #17
+
+  Scenario: Validar cambio de accion en piezas de "Remover" a "TOT" pieza existente en listado no enviada a compras
+  TOT: Otros trabajos tercerizados de reparacion
+  Posibles cambios de accion de la pieza: "Cambiar"-> "Remover"->"TOT". Filas 58 y 60 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+  Guardado de la pieza: Mantiene la misma posicion
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And Existe piezas en el listado de repuestos con accion "Remover" no enviada a compras
+  When el usuario cambia la accion de la pieza de "Remover" a "TOT"
+  Then el usuario deberia poder modificar la cantidad del repuesto,
+  And  no deberia poder  realizar las siguientes acciones <Acciones>
+  And  deberia guardar los cambios  al finalizar los ajustes
+
+  Examples:
+  |Acciones|
+  |Agrupar|
+  |seleccionar tipo de golpe|
+  |modificar referencia|
+  |modificar precio|
+
+  #18-
+  Scenario: Cargar pieza que ha sido eliminada en cualquier accion <accion> durante el proceso de ajuste enviada o no a compras
+  Regla de negocio 1: Cualquier pieza eliminada haya sido o no enviada a compras si se vuelve a cargar genera nueva posicion y la posicion anterior no altera la marcacion de las banderas
+  Posibles cambios de accion de la pieza: Filas 79-114 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And ha eliminado previamente una pieza con accion <accion>
+  When el usuario agrega la pieza nuevamente al listado de repuestos
+  Then el usuario debe visualizar la pieza en el listado de repuestos
+  And debe poder modificarla de acuerdo a la accion <accion> que le haya asignado
+
+
+  Examples:
+  |accion|
+  |reparar|
+  |Cambiar|
+  |remover|
+  |tot|
+
+
+  #19-
+  Scenario: Pieza de cambio con cotizacion recibida que cambia a reparacion o remocion no debe mostrar informacion de la cotizacion
+  Posibles cambios de accion de la pieza: Filas 72-75 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+
+  Given  que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And desea cambiar a "Reparar" una pieza de cambio que ya tiene asignada una cotizacion
+  And desea cambiar a "Remover" otra pieza de cambio que ya tiene asignada una cotizacion
+  When el usuario cambia la accion a las piezas
+  Then el usuario no deberia visualizar la informacion de la cotizacion de la pieza
+  And deberia visualizar la actualizacion en el valor de repuestos y mano de obra
+
+
+
 
 
