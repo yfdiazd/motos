@@ -306,7 +306,7 @@
 
   #18-
   Scenario: Cargar pieza que ha sido eliminada en cualquier accion <accion> durante el proceso de ajuste enviada o no a compras
-  Regla de negocio 1: Cualquier pieza eliminada haya sido o no enviada a compras si se vuelve a cargar genera nueva posicion y la posicion anterior no altera la marcacion de las banderas
+  Regla de negocio 1: Cualquier pieza eliminada haya sido o no enviada a compras, si se vuelve a cargar genera nueva posicion y la posicion anterior no altera la marcacion de las banderas
   Posibles cambios de accion de la pieza: Filas 79-114 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
 
@@ -337,7 +337,19 @@
   Then el usuario no deberia visualizar la informacion de la cotizacion de la pieza
   And deberia visualizar la actualizacion en el valor de repuestos y mano de obra
 
+  #20-
+  Scenario: Piezas TOT con cotizacion recibida que cambia a reparacion o remocion no debe mostrar informacion de la cotizacion
+  Posibles cambios de accion de la pieza: Filas 76 y 77 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
+
+  Given  que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
+  And desea cambiar a "Reparar" una pieza TOT que ya tiene asignada una cotizacion
+  And desea cambiar a "Remover" otra pieza TOT que ya tiene asignada una cotizacion
+  When el usuario cambia la accion a las piezas
+  Then el usuario no deberia visualizar la informacion de la cotizacion de la pieza
+  And deberia visualizar la actualizacion en el valor de repuestos y mano de obra
+
+ #21-
 
 
 
