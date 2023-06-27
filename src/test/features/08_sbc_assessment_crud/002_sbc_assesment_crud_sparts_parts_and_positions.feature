@@ -350,11 +350,22 @@
   And deberia visualizar la actualizacion en el valor de repuestos y mano de obra
 
  #21-
-  Scenario: Validar el proceso de cotizacion de piezas
+  Scenario: Permitir al usuario con <Rol> enviar a cotizar las piezas de cambio o TOT para los avisos en estado <estado>
+  Regla de negocio 1:
 
   Given que el usuario con rol <Rol> de la <Aseguradora> ingresa a la valoracion de un aviso en estado <estado>
-  When el usuario marque las piezas que desea cotizar
-  Then se deben marcar unicamente las piezas seleccionadas para cotizar
-  And solo se deben enviar a cotizar cuando se finalice el ajuste
+  And desea enviar a cotizar las piezas de cambio y/o TOT
+  When el usuario elija las piezas a cotizar
+  Then se deberia mostrar al usuario la informacion a enviar y solicitar la confirmacion del envio
+  And una vez se confirme el envio se deberia notificar que el envio fue realizado
 
+
+  #22  Pendiente confirmar comportamiento en sesion****
+  Scenario: Notificar al usuario cuando se presenta fallos en la solicitud de cotizacion de piezas
+
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea cotizar piezas de cambio y TOT
+  When el usuario envia a cotizar las piezas
+  And se presenta fallos en el proceso de envio
+  Then se deberia notificar al usuario la causa del fallo del envio
+  And permitir enviar las piezas nuevamente una vez se haya solucionado el fallo
 
