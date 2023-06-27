@@ -452,3 +452,16 @@
 
   |informacion>
   |precio, calidad, dias de entrega, descuento, sucursal|
+
+  #27
+  Scenario: Permitir al usuario ordenar la informacion del listado de repuestos
+
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea visualizar el listado de repuestos con un criterio de ordenamiento<criterio de ordenamiento>
+  When  el usuario selecciona el <criterio de ordenamiento>
+  Then deberia visualizar el listado de repuestos de acuerdo al criterio seleccionado
+
+  Examples:
+  |criterio de ordenamiento|
+  |Nombre de repuesto|
+  |Accion|
+  |Precio|
