@@ -38,7 +38,7 @@
   When El usuario da clic en el boton "Volver"
   Then El sistema regresa a la pantalla de datos basicos mostrando toda la información diligenciada
 
-#3 Falta criterio y validar con vic replanteamiento de cara al manejo del bloqueo del aviso
+#3 Falta criterio
   Scenario: Boton "Continuar" en la pantalla de datos basicos solo debe permitirse accionar una unica vez
 
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos

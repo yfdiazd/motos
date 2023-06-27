@@ -1,4 +1,4 @@
-#1 ajustar ya no va tipo de pintura
+#1
   Scenario: Validar informacion  de taller y ciudad de taller asociada en la creacion del aviso
 
   Given Que el aviso en estado "Sin valorar" tiene asociado un "Taller"
