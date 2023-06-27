@@ -29,3 +29,22 @@ Then El sistema direcciona al usuario al "Detalle del aviso"
 And  el estado del aviso cambia a "Pendiente Ajuste"
 And  se visualiza la informacion de los campos "Placa Tercero", "Placa Asegurado" , "Marca", "Linea", "Version", "Ano", "Valor comercial", "Porcentaje perdida", "Valor de mano de obra", "Valor de repuestos", "Ciudad del taller" y "Taller" de acuerdo a la informacion de la valoracion
 
+#2 validar que no permita avanzar sin un repuesto.
+
+Scenario: Restriccion al avanzar de detalle de valoracion sin piezas
+
+Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+When El usuario hace clic en el boton "Guardar"
+And no se ha ingresado ningun repuesto en la tabla de piezaas.
+Then El sistema debe mostrar un mejsaje con el texto: "Debes agregar minimo un repuesto para guardar la valoracion"
+And no debe permitir avanzar.
+
+
+  #3 validar que no se pueda cambiar el valor comercial:
+Scenario: Restriccion al avanzar de detalle de valoracion sin piezas
+
+Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
+When el usuario visualice la infomacion de los campos valor "comercial", "taller" y "ciudad de taller".
+And puede realizar cambios si los desea.
+Then el usuario podra persistir dichos cambios.
+

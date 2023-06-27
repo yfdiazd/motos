@@ -23,8 +23,8 @@
   Then El sistema muestra en el campo "Placa Asegurado" la placa del asegurado asociada al aviso
 
   Examples:
-  | Cobertura |
-  | PPD       |
-  | PPH       |
+  | Cobertura | descripcion |
+  | PPD       |cobertura perdida parcial por daños |
+  | PPH       |cobertura perdida parcial por hurto |
 
 

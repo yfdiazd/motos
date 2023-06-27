@@ -11,15 +11,16 @@ Scenario: Validacion cobertura del aviso
 
 
   Examples:
-  | Cobertura Sura, Bolivar |
-  | PPD|
-  | PPH|
-  | RC|
-
-  |Cobertura Panama |
-  |RC-Daños a la propiedad ajena|
-  |PPD-Comprensivo, colisión o vuelco|
-  |PPH-Hurto|
+  | Cobertura|Aseguradora|
+  | PPD|Sura|
+  | PPH|Sura|
+  | RC|Sura|
+  |PPD|Bolivar|
+  |PPH|Bolivar|
+  |RC|Bolivar|
+  |RC-Daños a la propiedad ajena| Sura Panama|
+  |PPD-Comprensivo, colisión o vuelco| Sura Panama|
+  |PPH-Hurto| Sura Panama|
 
   |Cobertura Chile|
   |https://docs.google.com/spreadsheets/d/1NslC1QsXIAjq99HekmdQhkelETbZpw6p/edit#gid=184756209 hoja Homologacion|
