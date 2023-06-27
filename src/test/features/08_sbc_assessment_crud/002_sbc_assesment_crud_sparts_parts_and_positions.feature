@@ -130,6 +130,7 @@
 
   #8
   Scenario: Validar cambio de accion de piezas en "Reparar a "TOT" pieza existente en listado no enviada a compras
+
   Guardado de la pieza: la pieza deberia mantener la misma posicion en la base de datos  y marcarse como no eliminada, no enviada a cotizar, ni enviada a administracion
   Posibles cambios de accion de la pieza: "Cambiar"-> "Reparar"->"TOT". Filas 49 y 59 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
   Regla de negocio 1: Para las piezas TOT el precio es 0.00 hasta que se reciba el precio del proceso de cotizacion y compra
@@ -188,6 +189,7 @@
 
   #11- Ajustar en figma
   Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover" pieza existente en listado no enviada a compras
+
   Regla de negocio 1: Para las piezas de remocion el precio es 0.00
   Regla de negocio 2: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
   Posibles cambios de accion de la pieza: Fila 52 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
@@ -209,6 +211,7 @@
   #12-
 
   Scenario: Validar cambio de accion en piezas de "TOT" a "Cambiar" pieza existente en listado no enviada a compras
+
   Regla de negocio 1: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
   Posibles cambios de accion de la pieza: Fila 53 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
@@ -223,6 +226,7 @@
 
   #13-
   Scenario: Validar cambio de accion en piezas de "TOT" a "Reparar" pieza existente en listado no enviada a compras
+
   Regla de negocio 1: Cuando se cambia una pieza de TOT a Reparar el precio se resetea a 0 y si la cantidad era mayor a 1 se resetea a 1
   Posibles cambios de accion de la pieza: Fila 54 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
@@ -239,6 +243,7 @@
   #14-
 
   Scenario: Validar cambio de accion en piezas de "TOT" a "Remover" pieza existente en listado no enviada a compras
+
   Regla de negocio 1: Para las piezas de remocion el precio es 0.00
   Regla de negocio 2: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
   Posibles cambios de accion de la pieza: Fila 55 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
@@ -255,6 +260,7 @@
 
   #15-
   Scenario: Validar cambio de accion en piezas de "Remover" a "Cambiar" pieza existente en listado no enviada a compras
+
   Regla de negocio 1: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
   Posibles cambios de accion de la pieza: "TOT"-> "Remover"->"Cambiar" .Filas 56 y 61 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
@@ -270,6 +276,7 @@
   #16-
 
   Scenario: Validar cambio de accion en piezas de "Remover" a "Reparar" pieza existente en listado no enviada a compras
+
   Regla de negocio 1: Cuando se cambia una pieza de Remover a Reparar si la cantidad era mayor a 1 se resetea a 1
   Posibles cambios de accion de la pieza: Fila 57 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
@@ -284,6 +291,7 @@
   #17
 
   Scenario: Validar cambio de accion en piezas de "Remover" a "TOT" pieza existente en listado no enviada a compras
+
   TOT: Otros trabajos tercerizados de reparacion
   Posibles cambios de accion de la pieza: "Cambiar"-> "Remover"->"TOT". Filas 58 y 60 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
@@ -306,7 +314,9 @@
 
   #18-
   Scenario: Cargar pieza que ha sido eliminada en cualquier accion <accion> durante el proceso de ajuste enviada o no a compras
-  Regla de negocio 1: Cualquier pieza eliminada haya sido o no enviada a compras, si se vuelve a cargar genera nueva posicion y la posicion anterior no altera la marcacion de las banderas
+
+  Regla de negocio 1: Cualquier pieza eliminada haya sido o no enviada a compras, si se vuelve a cargar genera nueva posicion
+  y la posicion anterior no altera la marcacion de las banderas
   Posibles cambios de accion de la pieza: Filas 79-114 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
 
 
@@ -351,7 +361,6 @@
 
  #21-
   Scenario: Permitir al usuario con <Rol> enviar a cotizar las piezas de cambio o TOT para los avisos en estado <estado>
-  Regla de negocio 1:
 
   Given que el usuario con rol <Rol> de la <Aseguradora> ingresa a la valoracion de un aviso en estado <estado>
   And desea enviar a cotizar las piezas de cambio y/o TOT
@@ -369,3 +378,77 @@
   Then se deberia notificar al usuario la causa del fallo del envio
   And permitir enviar las piezas nuevamente una vez se haya solucionado el fallo
 
+  #23
+  Scenario: Permitir enviar a cotizar pieza TOT que habia sido enviada como repuesto de cambio
+
+  Regla de negocio 1: Cuando se ha enviado a cotizar un repuesto de cambio y pasa a reparacion o remocion
+  y luego se cambia a TOT, se debe crear una nueva posicion para ser enviada a compras
+  Posibles cambios de accion de la pieza: Filas 115 - 117 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea cambiar la accion <accion> de una pieza a TOT
+  And la pieza ya habia sido enviada a compras como repuesto de cambio
+  When el usuario cambia la accion de la pieza a "TOT"
+  Then el usuario no deberia visualizar informacion de la cotizacion registrada
+  And deberia poder enviar a cotizar la TOT como una nueva pieza
+
+  Examples:
+  |accion|
+  |reparar|
+  |remover|
+  |cambiar|
+
+  #24
+  Scenario: Permitir enviar a cotizar pieza de cambio que habia sido enviada a compras como TOT
+
+  Regla de negocio 1: Cuando se ha enviado a cotizar una TOT y pasa a reparacion o remocion
+  y luego se pasa a "Cambiar", se debe crear una nueva posicion para ser enviada a compras
+  Posibles cambios de accion de la pieza: Filas 118 y 119 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
+
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea cambiar la accion <accion> de una pieza a "Cambiar"
+  And la pieza ya habia sido enviada a compras como TOT
+  When el usuario cambia la accion de la pieza a "Cambiar"
+  Then el usuario no deberia visualizar informacion de la cotizacion registrada
+  And deberia poder enviar a cotizar el repuesto de cambio como una nueva pieza
+
+  Examples:
+  |accion|
+  |reparar|
+  |remover|
+  |cambiar|
+
+  #25-
+  Scenario: Recuperar informacion de la cotizacion para repuestos de cambio
+
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea recuperar la informacion de cotizacioin de una pieza de cambio
+  And esta pieza no ha sido eliminada previamente
+  And se tiene cotizacion registrada para la pieza
+  When el usuario modifica la accion <accion> de la pieza a "Cambiar"
+  Then el usuario deberia visualizar la <informacion> de la cotizacion
+  And deberia visualizar la actualizacion del valor de repuestos y mano de obra en la valoracion
+
+  Examples:
+  |accion|
+  |remover|
+  |reparar|
+
+  |informacion>
+  |precio, calidad, dias de entrega, descuento, sucursal|
+
+
+  #26-
+  Scenario: Recuperar informacion de la cotizacion para TOT
+
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea recuperar la informacion de cotizacion de una pieza TOT
+  And esta pieza no ha sido eliminada previamente
+  And se tiene cotizacion registrada para la pieza
+  When el usuario modifica la accion <accion> de la pieza a "TOT"
+  Then el usuario deberia visualizar la <informacion> de la cotizacion
+  And deberia visualizar la actualizacion del valor de repuestos en la valoracion
+
+  Examples:
+  |accion|
+  |remover|
+  |reparar|
+
+  |informacion>
+  |precio, calidad, dias de entrega, descuento, sucursal|
