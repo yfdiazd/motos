@@ -350,6 +350,11 @@
   And deberia visualizar la actualizacion en el valor de repuestos y mano de obra
 
  #21-
+  Scenario: Validar el proceso de cotizacion de piezas
 
+  Given que el usuario con rol <Rol> de la <Aseguradora> ingresa a la valoracion de un aviso en estado <estado>
+  When el usuario marque las piezas que desea cotizar
+  Then se deben marcar unicamente las piezas seleccionadas para cotizar
+  And solo se deben enviar a cotizar cuando se finalice el ajuste
 
 
