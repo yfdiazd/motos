@@ -44,9 +44,9 @@
   Then el sistema carga la pieza en la tabla de repuestos con la accion "Reparar" por defecto
   And  muestra el tipo de golpe "L" por defecto
   And  muestra el switch de "Agrupar" encendido por defecto
-  And el campo precio se visualiza deshabilitado para ingresar informacion
+  And el campo precio se visualiza habilitado para ingresar informacion
   And  muestra la moneda por <pais> y el valor "0.00"
-  And el campo "Cantidades" se muestra deshabilitado para modificar la cantidad del repuesto
+  And el campo "Cantidades" se muestra habilitado para modificar la cantidad del repuesto
   And el campo "Ref" se visualiza habilitado si el <pais> esta configurado para trabajar con referencias, sino no deberia visualizarse este campo
   When el usuario cambia la accion del repuesto de "Reparar" a "Cambiar"
   Then el sistema habilita el campo "Precio" para ser diligenciado permaneciendo visible la moneda del <pais>
@@ -97,7 +97,7 @@
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Cambiar"
   When el usuario cambia la accion de la pieza de "Cambiar" a "Reparar"
-  Then el sistema deshabilita el campo "Cantidades" y lo resetea a 1
+  Then el sistema habilita el campo "Cantidades" y lo resetea a 1
   And muestra el campo tipo de golpe con la opcion guardada inicialmente
   And se deshabilita el campo precio  con el valor cero acompañado por el tipo de moneda del <pais>
   When el usuario hace clic en el boton "Guardar"
@@ -114,7 +114,7 @@
   When el usuario cambia la accion de la pieza de "Cambiar" a "TOT"
   Then el sistema oculta el campo tipo de golpe
   And  se oculta el switch "Agrupar"
-  And el campo precio se visualiza deshabilitado para ingresar el precio
+  And el campo precio se reseta a 0 y se visualiza deshabilitado para ingresar el precio
   And el campo "Cantidades" se muestra habilitado para modificar la cantidad del repuesto
   When el usuario hace clic en el boton "Guardar"
   Then  muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
@@ -289,8 +289,7 @@
   Then el sistema muestra la ultima pagina de repuestos dentro de la tabla
   When el usuario hace clic en el boton "Primera pagina" desde la "Ultima pagina"
   Then el sistema muestra la primera pagina de repuestos dentro de la tabla
-  When el usuario pulsa sobre el numero de pagina especifica intermedia que desea visualizar
-  Then el sistema muestra la pagina de repuestos seleccionada
+
 
   #9 - Funcionalidad paginador cantidad de paginas cuando se elimina todos los repuestos
       #validar con Lore que sucede si cuando la tabla esta vacía se pulsa el boton guardar
@@ -319,7 +318,7 @@
   Then el sistema ordena los repuestos en la tabla listando primero los de accion "Cambiar"
   And  los de accion "Reparar" se listan posterior a los de cambio
   When el usuario selecciona la opcion "Precio" en el campo "Ordenar por"
-  Then el sistema ordena los repuestos en la lista  por precio de menor a mayor independiente del nombre y la accion
+  Then el sistema ordena los repuestos en la lista  por precio de mayor a menor independiente del nombre y la accion
   When el usuario carga una nuevo repuesto desde el buscador de repuestos
   Then el sistema muestra el repuesto en primer lugar en la tabla
   And  se mantiene el ordenamiento de los demas repuestos por nombre de repuesto

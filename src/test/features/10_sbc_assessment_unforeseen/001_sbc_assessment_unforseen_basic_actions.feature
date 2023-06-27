@@ -30,10 +30,10 @@
   Scenario: Se pueden agregar notas en el estado autorizado
 
   Given que el usuario con rol <Rol> desea agregar notas para un aviso "Autorizado"
-  When consulta la valoracion y hace uso de la accion de imprevistos
+  When consulta la valoracion y sin hacer uso de la accion de imprevistos
   Then el usuario deberia poder agregar las notas
   And  deberia visualizarlas con los datos de <auditoria>
-  And finalizar el proceso, no se deben solicitar la carga de imagenes
+  And finalizar el proceso, no se deben solicitar la carga de fotografias
 
   |auditoria|
   |rol, usuario, fecha y hora|
@@ -47,10 +47,27 @@
   And  intenta editar la información en de valor comercial, taller o ciudad del talle
   Then se espera que todas las opciones de edición estén habilitadas
   And el usuario pueda realizar las ediciones permitidas
-  And finalizar el proceso, no se deben solicitar la carga de imagenes
+  And finalizar el proceso, no se deben solicitar la carga de fotografias
 
   |Rol|
   |Administrador|
+
+  Scenario: Permiter la edición el valor comercial del aviso estado "autorizado"
+
+  Given que el usuario con rol <Rol> desea editar un aviso "Autorizado"
+  When consulta la valoracion y hace uso de la accion de imprevistos
+  And  intenta editar la información en de valor comercial
+  Then se espera que el valor comercial permita edición
+  And finalizar el proceso, no se deben solicitar la carga de fotografias
+
+  |Rol|
+  |analista aseguradora|
+  |ATS|
+  |administrador|
+  |perito aseguradora|
+  |gestor taller|
+  |mesa especializada|
+
 
     # Imprevistos pendientes por aprobar o rechazar
 
@@ -102,3 +119,36 @@
   |gestor taller|
   |mesa especializada|
 
+
+  Scenario: No se debe permitir la aprobacion o rechazo de imprevistos a roles de taller
+
+  Given que el usuario de rol <Rol> desea rechazar o aprobar imprevistos pendientes
+  When consulta la valoracion
+  Then deberia visualizar la accion para realizar imprevistos
+  And no deberia visualizar las acciones para rechazar o aprobar imprevistos
+
+  |Rol|
+  |Asesor de servicio taller|
+  |jefe de taller|
+  |cotizador de daños taller|
+
+  Scenario: modificar agrupacion de piezas con accion <acciones> del aviso estado "autorizado"
+
+  Given que el usuario de rol <Rol> desea ajustar la agrupacion de piezas del listado de repuestos
+  When consulta la valoracion y hace uso de la accion de imprevistos
+  Then deberia poder modificar la agrupacion de las piezas
+  And se deberia actualizar el valor de mano de obra y el valor total de la reparacion
+  And al finalizar el proceso, no se deben solicitar la carga de fotografias
+
+  |Rol|
+  |analista aseguradora|
+  |ATS|
+  |administrador|
+  |perito aseguradora|
+  |gestor taller|
+  |mesa especializada|
+
+  |acciones|
+  |cambiar|
+  |reparar|
+  |remover|
