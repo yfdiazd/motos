@@ -3,11 +3,14 @@
  #Validar con Lore si el sistema debe mantener los
  #1
 Scenario: Validar acceso pantalla "Mano de Obra" desde bandeja de avisos
+
   Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla "Detalle Valoración" desde el botón "Ir" en la bandeja de avisos
   When El usuario hace clic en el botón lápiz de la tarjeta "Mano de Obra"
   Then el sistema direcciona al usuario a la pantalla "Mano de Obra"
   And habilita la sección de ajuste en horas si el <rol> es un rol de <aseguradora>, sino muestra deshabilitada esta sección para su edición
   And la sección de operaciones de control se encuentra habilitada para los roles de aseguradora
+
+
 
 #Tener en cuenta que para motos no aplica Pintura
  #Falta incluir criterio
@@ -92,12 +95,7 @@ Examples:
 |Diagnóstico mecánico|
 |Balanceo|
 
-#Validar % de perdida, colores
-#0-40 % Azul
-#41-60 % Naranja
-#61-100 % Rojo (no puede superar el 100%)
-
-  #7
+ #7  corregir porque vuelve al detalle de valoracion no del aviso
 Scenario: Validar comportamiento del sistema al hacer clic botón "Volver"
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
 And ha realizado modificaciones en horas u operaciones de control
@@ -105,15 +103,15 @@ When el usuario haga clic en el botón "Volver"
 Then el sistema dirige al usuario al detalle del aviso
 And no realiza guardado de los cambios realizados
 
-#8
+#8 ajustar de acuerdo al figma boton guarrdar ya no va sino confirmar  ,
 Scenario: Validar comportamiento del sistema al hacer clic botón "Guardar"
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
 And ha realizado modificaciones en horas u operaciones de control
 When el usuario haga clic en el botón "Guardar"
-Then el sistema permite guardar los cambios
+Then el sistema permite guardar los cambios //no se guarda los cambios sino se mantiene solo se guarda en el finalizar
 And dirige a la pantalla del detalle de la valoración
 
-#9
+#9 modal ya no va
 Scenario: Validar comportamiento del botón "Descartar"
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
 And ha realizado modificaciones en horas u operaciones de control
@@ -122,7 +120,7 @@ When el usuario haga clic en el botón "Descartar"
 Then el sistema omite los cambios realizados
 And deja al usuario en la pantalla de mano de obra
 
-#10
+#10 ya no aplica ver figma
 Scenario: Validar comportamiento del botón "Atrás"
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
 And no ha realizado modificaciones en horas u operaciones de control

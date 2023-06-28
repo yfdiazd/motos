@@ -13,6 +13,8 @@
   |accion|
   |cambiar|
   |reparar|
+  |remover|
+  |TOT|
 
   #2-
   Scenario: Cargar imprevisto por cambio de accion de "Reparar" a "Cambiar" en un aviso "Autorizado"
