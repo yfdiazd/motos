@@ -6,27 +6,28 @@
   When  consulta la valoracion sin hacer uso de la accion de imprevistos
   Then el usuario no deberia poder modificar la informacion de la mano de obra
 
-
+  #2
   Scenario: No se puede cambiar el valor comercial en el estado autorizado
 
   Given  que el usuario con rol <Rol> desea modificar el valor comercial para un aviso "Autorizado"
   When  consulta la valoracion sin hacer uso de la accion de imprevistos
   Then el usuario no deberia poder modificar la informacion del valor comercial
 
+  #3
   Scenario: No se puede cambiar la ciudad del taller en el estado autorizado
 
   Given  que el usuario con rol <Rol> desea modificar la ciudad del taller para un aviso "Autorizado"
   When  consulta la valoracion sin hacer uso de la accion de imprevistos
   Then el usuario no deberia poder modificar la informacion de la ciudad del taller
 
-
+  #4
   Scenario: No se puede cambiar el taller en el estado autorizado
 
   Given  que el usuario con rol <Rol> desea modificar el taller para un aviso "Autorizado"
   When  consulta la valoracion sin hacer uso de la accion de imprevistos
   Then el usuario no deberia poder modificar la informacion del taller
 
-
+  #5
   Scenario: Se pueden agregar notas en el estado autorizado
 
   Given que el usuario con rol <Rol> desea agregar notas para un aviso "Autorizado"
@@ -39,7 +40,7 @@
   |rol, usuario, fecha y hora|
 
 
-
+  #6
   Scenario: Permiter la edición del aviso estado "autorizado"
 
   Given que el usuario con rol <Rol> desea editar un aviso "Autorizado"
@@ -53,8 +54,8 @@
   |Administrador|
 
     # Imprevistos pendientes por aprobar o rechazar
-
-  Scenario: aprobar imprevistos pendietes, con estado TOT o Cambio.
+  #7
+  Scenario: aprobar imprevistos pendientes, con estado TOT o Cambio.
 
   Given que el usuario de rol <Rol> desea aprobar imprevistos pendientes
   When selecciona los imprevistos a aprobar
@@ -69,6 +70,7 @@
   |gestor taller|
   |mesa especializada|
 
+  #8-
   Scenario: aprobar imprevistos pendietes, con estado diferente a TOT o Cambio.
   Regla de negocio: los repuestos aprobados de accion Reparar o Remover no se deben enviar a compras
 
@@ -85,8 +87,8 @@
   |gestor taller|
   |mesa especializada|
 
-
-  Scenario: Rechazar imprevistos pendietes
+  #9
+  Scenario: Rechazar imprevistos pendientes
 
   Given que el usuario de rol <Rol> desea rechazar imprevistos pendientes
   When selecciona los imprevistos a rechazar
@@ -102,3 +104,10 @@
   |gestor taller|
   |mesa especializada|
 
+  #10
+  Scenario: No permitir incluir nuevos imprevistos a rol <Rol> de aseguradora si hay imprevistos pendientes por aprobar
+
+  Given que el usuario de rol <Rol> de aseguradora desea cargar nuevos imprevistos
+  And el existe imprevistos pendientes por aprobar o rechazar
+  When el usuario ingresa a la valoracion
+  Then el usuario no deberia poder cargar nuevos imprevistos positivos o negativos hasta no ser aprobabos o rechazados los que estan pendientes
