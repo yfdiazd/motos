@@ -10,7 +10,7 @@ Then El sistema regresa al usuario a la pantalla de "Datos basicos" para consult
 And El sistema muestra habilitado el formulario para realizar edicion de informacion
 When El usuario modifica el numero del VIN a traves del OCR
 And El sistema reconoce el VIN
-Then  El sistema carga nuevamente la informacion del vehiculo asociada al VIN, Marca, Linea, Version Modelo y Valor Comercial
+Then El sistema carga nuevamente la informacion del vehiculo asociada al VIN, Marca, Linea, Version Modelo y Valor Comercial
 And El sistema mantiene diligenciado los demas campos que no se han editado
 When El usuario modifica la carroceria
 And hace clic en el boton "Continuar"
@@ -26,8 +26,8 @@ Then el sistema muestra mensaje: "Los cambios fueron realizados"
 And se habilita el boton "Finalizar"
 When el usuario hace clic en el boton "Finalizar"
 Then El sistema direcciona al usuario al "Detalle del aviso"
-And  el estado del aviso cambia a "Pendiente Ajuste"
-And  se visualiza la informacion de los campos "Placa Tercero", "Placa Asegurado" , "Marca", "Linea", "Version", "Ano", "Valor comercial", "Porcentaje perdida", "Valor de mano de obra", "Valor de repuestos", "Ciudad del taller" y "Taller" de acuerdo a la informacion de la valoracion
+And el estado del aviso cambia a "Pendiente Ajuste"
+And se visualiza la informacion de los campos "Placa Tercero", "Placa Asegurado" , "Marca", "Linea", "Version", "Ano", "Valor comercial", "Porcentaje perdida", "Valor de mano de obra", "Valor de repuestos", "Ciudad del taller" y "Taller" de acuerdo a la informacion de la valoracion
 
 #2 validar que no permita avanzar sin un repuesto.
 
@@ -40,7 +40,7 @@ Then El sistema debe mostrar un mejsaje con el texto: "Debes agregar minimo un r
 And no debe permitir avanzar.
 
 
-  #3 validar que no se pueda cambiar el valor comercial:
+ #3 validar que no se pueda cambiar el valor comercial:
 Scenario: Restriccion al avanzar de detalle de valoracion sin piezas
 
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
