@@ -456,7 +456,7 @@
   #27
   Scenario: Permitir al usuario ordenar la informacion del listado de repuestos
 
-  Given que el usuario con rol <Rol> de la <Aseguradora> desea visualizar el listado de repuestos con un criterio de ordenamiento<criterio de ordenamiento>
+  Given que el usuario con rol <Rol> de la <Aseguradora> desea visualizar el listado de repuestos con un criterio de ordenamiento <criterio de ordenamiento>
   When  el usuario selecciona el <criterio de ordenamiento>
   Then deberia visualizar el listado de repuestos de acuerdo al criterio seleccionado
 
@@ -466,3 +466,27 @@
   |Accion|
   |Precio|
 
+  #28 No permitir el ordenamiento hasta el guardado de datos
+  Scenario: No permitir al usuario realizar un ordenamiento de repuestos si se ha modificado algun valor en el listado de repuestos
+  Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
+  When el usuario intente ralizar un ordenamiento <criterio de ordenamiento>
+  Then el usuario no deberia poder realizar algun ordenamiento del listado de repuestos
+
+  Examples:
+  |criterio de ordenamiento|
+  |Nombre de repuesto|
+  |Accion|
+  |Precio|
+
+    #28 Permitir el ordenamiento hasta el guardado de datos
+  Scenario: Permitir al usuario realizar un ordenamiento de repuestos en el listado de repuestos
+  Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
+  And el usuario realiza el guardado de cambios
+  When el usuario intente ralizar un ordenamiento <criterio de ordenamiento>
+  Then el usuario deberia poder realizar el ordenamiento del listado de repuestos
+
+  Examples:
+  |criterio de ordenamiento|
+  |Nombre de repuesto|
+  |Accion|
+  |Precio|

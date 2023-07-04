@@ -35,7 +35,7 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
 #3
  Scenario: Validar cambio de "Taller" y "Ciudad de Taller" desde la edicion del detalle del aviso
 
- Given Que el aviso en estado "Sin valorar" tiene un cambio de taller de Solvente a Agua desde el detalle del aviso
+ Given Que el aviso en estado "Sin valorar" tiene un cambio de taller desde el detalle del aviso
  And la ciudad del taller tambien se modifica
  When El usuario con <Rol> de la <Aseguradora> ingresa al formulario datos basicos
  Then El sistema muestra el campo "Taller" con el taller asociado al aviso
@@ -113,6 +113,6 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
  When el usuario sale de la pantalla sin guardar
  And accede a la bandeja de avisos
  Then el sistema muestra en la bandeja el taller asociado al aviso desde datos basicos
- And muestra el historico de taller vinculado al aviso.
+ And muestra el historico de taller vinculado al aviso en el campo taller de la tabla de avisos mediante un tooltip.
 
 
