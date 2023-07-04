@@ -40,11 +40,11 @@ Then El sistema debe mostrar un mejsaje con el texto: "Debes agregar minimo un r
 And no debe permitir avanzar.
 
 
- #3 validar que no se pueda cambiar el valor comercial:
-Scenario: Restriccion al avanzar de detalle de valoracion sin piezas
+ #3 validar que se permita cambiar el valor comercial:
+Scenario: Edicion para el valor comercial, "taller" y "ciudad taller"
 
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
 When el usuario visualice la infomacion de los campos valor "comercial", "taller" y "ciudad de taller".
-And puede realizar cambios si los desea.
-Then el usuario podra persistir dichos cambios.
+Then el usuario deberia poder realizar cambios si los desea.
+And el usuario podra persistir dichos cambios.
 

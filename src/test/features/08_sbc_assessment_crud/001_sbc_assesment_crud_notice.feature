@@ -1,23 +1,23 @@
  #1 -
 
-  Scenario: Validar que el usuario de la aseguradora o del taller no pueda editar los <datos del vehiculo> y la <informacion del aviso>
+ Scenario: Validar que el usuario de la aseguradora o del taller no pueda editar los <datos del vehiculo> y la <informacion del aviso>
 
-  Given que el usuario con <Rol> de la <Aseguradora> desea conocer los <datos del vehículo> valorado y la <informacion del aviso>
-  When el usuario consulta la informacion de la valoracion
-  Then el usuario deberia poder visualizar los <datos del vehículo> y la <informacion del aviso>
-  And no deberia poder editar estos datos asi se tenga <permisos asociados> de edicion a la valoracion
+ Given que el usuario con <Rol> de la <Aseguradora> desea conocer los <datos del vehículo> valorado y la <informacion del aviso>
+ When el usuario consulta la informacion de la valoracion
+ Then el usuario deberia poder visualizar los <datos del vehículo> y la <informacion del aviso>
+ And no deberia poder editar estos datos asi se tenga <permisos asociados> de edicion a la valoracion
 
 
-  Examples:
-  |Rol|Aseguradora|datos del vehiculo|informacion del aviso|
-  |Superadministrador|Subocol|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |Administrador|Sura Chile|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |Facilitador|Sura|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |Movil|Bolivar|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |Analista aseguradora|Sura Panama|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |cotizador danos taller|Sura chile|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |asesor de servicio taller|Sura panama|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
-  |jefe taller|Sura|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ Examples:
+ |Rol|Aseguradora|datos del vehiculo|informacion del aviso|
+ |Superadministrador|Subocol|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |Administrador|Sura Chile|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |Facilitador|Sura|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |Movil|Bolivar|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |Analista aseguradora|Sura Panama|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |cotizador danos taller|Sura chile|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |asesor de servicio taller|Sura panama|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
+ |jefe taller|Sura|Marca,Linea,Version,Anio, VIN, Tipo de vehiculo/carroceria|Placa Asegurado|Placa Tercero|Ciudad de ocurrencia|N Aviso|Estado|Logo|N Siniestro|Cobertura|
 
  #2 - decir "informacion detallada" suena ambiguo pero como hacer para no detallar todos los campos porque
  #basicamente el pdf deberia mostrar la foto de la pantalla crud
@@ -195,7 +195,7 @@
  And el aviso se encuentra en estado <estado>
  When modifica el taller en la misma ciudad o ciudad diferente
  Then el usuario deberia visualizar las tarifas que el taller seleccionado maneja para la marca que se esta valorando
- And el valor de la mano de obra actualizada
+ And el valor de la mano de obra actualizada, y total valoracion
 
  Examples:
  |estado|
@@ -215,7 +215,7 @@
  And el taller seleccionado no trabaja con la marca que se esta valorando
  When el usuario modifica el taller en la misma ciudad o ciudad diferente
  Then deberia visualizar la menor tarifa configurada para el taller seleccionado
- And el valor de la mano de obra actualizada
+ And el valor de la mano de obra actualizada junto al total de valoracion
 
 
  Examples:
@@ -332,3 +332,28 @@
  |Desistido|Jefe de taller|
  |Pagado|Perito aseguradora|
 
+    #21 No permitir el ordenamiento hasta el guardado de datos
+ Scenario: No permitir al usuario realizar un ordenamiento de repuestos si se ha modificado algun valor en el listado de repuestos
+ Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
+ When el usuario intente ralizar un ordenamiento <criterio de ordenamiento>
+ Then el usuario no deberia poder realizar algun ordenamiento del listado de repuestos
+
+ Examples:
+ |criterio de ordenamiento|
+ |Nombre de repuesto|
+ |Accion|
+ |Precio|
+
+    #22 Permitir el ordenamiento hasta el guardado de datos
+ Scenario: Permitir al usuario realizar un ordenamiento de repuestos en el listado de repuestos
+ Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
+ And el usuario finaliza el proceso de CRUD
+ And el usuario consulta nuevamente CRUD
+ When el usuario intente ralizar un ordenamiento <criterio de ordenamiento>
+ Then deberia poder realizar el ordenamiento del listado de repuestos
+
+ Examples:
+ |criterio de ordenamiento|
+ |Nombre de repuesto|
+ |Accion|
+ |Precio|
