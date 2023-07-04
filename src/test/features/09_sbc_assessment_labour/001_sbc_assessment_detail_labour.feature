@@ -103,34 +103,21 @@ Examples:
 |Diagnóstico mecánico|
 |Balanceo|
 
- #7  corregir porque vuelve al detalle de valoracion no del aviso
-Scenario: Validar comportamiento del sistema al hacer clic botón "Volver"
-Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
-And ha realizado modificaciones en horas u operaciones de control
-When el usuario haga clic en el botón "Volver"
-Then el sistema dirige al usuario al detalle del aviso
-And no realiza guardado de los cambios realizados
 
-#8 ajustar de acuerdo al figma boton guarrdar ya no va sino confirmar  ,
-Scenario: Validar comportamiento del sistema al hacer clic botón "Guardar"
+#7 ajustar de acuerdo al figma boton guarrdar ya no va sino confirmar  ,
+Scenario: Validar comportamiento del sistema al hacer clic botón "Confirmar"
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
 And ha realizado modificaciones en horas u operaciones de control
-When el usuario haga clic en el botón "Guardar"
-Then el sistema permite guardar los cambios //no se guarda los cambios sino se mantiene solo se guarda en el finalizar
+When el usuario haga clic en el botón "Confirmar"
+Then el el sistema mantiene los cambios realizados los cuales se guardaran una vez finalizado el proceso de valoracion
 And dirige a la pantalla del detalle de la valoración
 
-#9 modal ya no va
+#8
 Scenario: Validar comportamiento del botón "Descartar"
 Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
 And ha realizado modificaciones en horas u operaciones de control
-Then el sistema cambia el valor del botón "Atrás" por "Descartar"
 When el usuario haga clic en el botón "Descartar"
-Then el sistema omite los cambios realizados
+Then se muestr un mensaje con el texto: "¿Estas seguro que deseas salir? Perderás toda la información ingresada"
+And al confimar dicha advertencia se descartan los cambios realizados
 And deja al usuario en la pantalla de mano de obra
 
-#10 ya no aplica ver figma
-Scenario: Validar comportamiento del botón "Atrás"
-Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
-And no ha realizado modificaciones en horas u operaciones de control
-When el usuario haga clic en el botón "Atrás"
-Then el sistema dirige al usuario al detalle del aviso
