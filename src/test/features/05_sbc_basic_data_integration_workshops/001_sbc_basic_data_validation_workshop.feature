@@ -49,8 +49,11 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
  And muestra el "Taller" actualizado y "Ciudad de taller" asociado al aviso
  And no permite realizar edicion de esta informacion
 
-#4 validado falta en criterio.
+#4
  Scenario: Validar cambio de taller en la misma ciudad desde datos basicos
+
+ Regla de negocio: Roles de taller (cotizador de daños taller, asesor de servicio y jefe de taller ) direccionan a la bandeja
+ todos los roles de aseguradora direccionan al detalle del aviso.
 
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa al formulario de datos basicos
  When El usuario despliega la lista en el campo "Taller"
@@ -75,11 +78,14 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
 #5
  Scenario: Validar cambio de "Ciudad de Taller" y "Taller" desde datos basicos
 
+ Regla de negocio: Roles de taller (cotizador de daños taller, asesor de servicio y jefe de taller ) direccionan a la bandeja
+ todos los roles de aseguradora direccionan al detalle del aviso.
+
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa al formulario de datos basicos
  When El usuario modifica la ciudad del taller en el campo "Ciudad del taller"
  Then El sistema lista en el campo "Taller" unicamente los talleres asociados al tipo de vehiculo "Moto" para la ciudad seleccionada
  When El usuario cambia el taller en el campo "Taller"
-  When El usuario completa el formulario de datos básicos
+ And completa el formulario de datos basicos
  And hace clic en el boton continuar
  Then El sistema ubica al usuario en la pantalla "Zonas afectadas"
  When El usuario carga los documentos y fotografias
@@ -94,8 +100,7 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
  And El sistema muestra en el campo "Ciudad del taller" la ciudad del taller que quedo seleccionada desde datos basicos asociada al taller
 
 
-# 6 vamos a dejar vacio y se va a mostrar mensaje para indicar al usuario que seleccione el taller de motos ************
-
+#6
  Scenario: Validar informacion de "Ciudad del taller" y "Taller" asociado en la creacion del aviso cuando el taller no corresponde al tipo de vehiculo "Moto"
 
  Given Que el aviso en estado "Sin valorar" tiene asociado un "Taller" que no pertenece al tipo de vehiculo "Moto"
@@ -112,7 +117,7 @@ Scenario: Validar cambio de taller asociado al aviso en la misma ciudad desde la
  Then el sistema muestra en el campo Taller, el taller asociado desde datos basicos y en el campo "Ciudad del taller" la ciudad asociada al aviso
  When el usuario sale de la pantalla sin guardar
  And accede a la bandeja de avisos
- Then el sistema muestra en la bandeja el taller asociado al aviso desde datos basicos
- And muestra el historico de taller vinculado al aviso en el campo taller de la tabla de avisos mediante un tooltip.
+ Then el sistema muestra en la bandeja de avisos de admin y en el detalle del aviso  el taller asociado al aviso desde datos basicos
+ And muestra el historico de taller vinculado al aviso  mediante un tooltip tanto en el campo taller de la bandeja de avisos como en el campo taller en detalle del aviso.
 
 
