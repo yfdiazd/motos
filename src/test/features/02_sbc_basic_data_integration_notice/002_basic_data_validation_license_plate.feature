@@ -1,3 +1,5 @@
+ #https://app.clickup.com/t/3138710/INC-1907
+
  #1
  Scenario: Validar campo placa en "Datos basicos" y "Detalle Valoracion" cuando cobertura es RC
 

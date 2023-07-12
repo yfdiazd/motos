@@ -1,3 +1,4 @@
+# https://app.clickup.com/t/3138710/INC-1909
   #1
   Scenario: Eliminar repuestos en el proceso de ajuste independientemente si se enviaron o no a compras
 
@@ -9,7 +10,8 @@
   Then deberia visualizar una alerta de confirmacion
   And poder elegir si confirma o no la eliminacion
 
-
+ |rol|
+ |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   Examples:
   |accion|
@@ -19,8 +21,8 @@
   |Tot|
 
   Examples:
-  |estado|
-  |Pendiente ajuste *
+  |estado|Rol|
+  |Pendiente ajuste *|
   |Ajustado| *
   |Pendiente Aceptacion|*
   |Actualizar Siniestro|*
@@ -28,8 +30,6 @@
   |Pendiente Autorizacion|*
   |Autorizado|*
 
-  |Pendiente Aceptacion||
-  |Ajustado|Eliminada: True, Envio_cotizar: False, Envio_Administracion: False|
 
 
   #2
@@ -40,6 +40,8 @@
   And  intenta finalizar la valoracion
   Then no deberia poder finalizar el proceso porque debe tener minimo una pieza cargada independiente de la accion <accion> de la pieza
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #3
 
   Scenario: Buscar pieza no existente en listado de repuestos para avisos en estado <estado> previo a la autorizacion
@@ -59,14 +61,20 @@
   |Pendiente conciliacion|
   |Pendiente Autorizacion|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
+
+
   #4
   Scenario: Validar control de duplicidad de piezas
 
   Given el usuario con <Rol> de la <Aseguradora> se encuentra ajustando la valoracion
   When el usuario busca una pieza en el buscador de repuestos
   And la pieza ya existe en el listado de repuestos
-  Then el usuario deberia poder visualizar las piezas que continen el valor buscado excluyendo  la pieza exactamente buscada
+  Then el usuario deberia poder visualizar las piezas que contienen el valor buscado excluyendo  la pieza exactamente buscada
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #5
   Scenario: Agregar pieza en el proceso de ajuste de la valoracion para avisos en estados <estado> previos a la autorizacion
 
@@ -81,6 +89,9 @@
   Example:
   |pieza|
   |Irs Motos https://docs.google.com/spreadsheets/d/1epoow7B10pgjJrVfO-wbOlw7TxT4vGdL/edit#gid=1854025519|
+
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #6
   Scenario: Validar cambio de accion en piezas de "Reparar" a "Cambiar" pieza existente en listado no enviada a compras
@@ -105,7 +116,8 @@
   |Pendiente conciliacion|
   |Pendiente Autorizacion|
 
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #7
   Scenario: Validar cambio de accion en piezas de "Reparar" a "Remover" pieza existente en listado no enviada a compras
 
@@ -126,7 +138,8 @@
   |Pendiente Aceptacion|
   |Ajustado|
 
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #8
   Scenario: Validar cambio de accion de piezas en "Reparar a "TOT" pieza existente en listado no enviada a compras
@@ -148,6 +161,9 @@
   |Pendiente Aceptacion|
   |Ajustado|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
+
   #9
   Scenario: Validar cambio de accion de piezas en "Cambiar" a "Reparar" pieza existente en listado no enviada a compras
 
@@ -166,6 +182,9 @@
   |estado|
   |Pendiente Aceptacion|
   |Ajustado|
+
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #10-
   Scenario: Validar cambio de accion de piezas en "Cambiar" a "TOT" pieza existente en listado no enviada a compras
@@ -187,6 +206,9 @@
   |Pendiente Aceptacion|
   |Ajustado|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
+
   #11- Ajustar en figma
   Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover" pieza existente en listado no enviada a compras
 
@@ -207,6 +229,8 @@
   |Pendiente Aceptacion|
   |Ajustado|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #12-
 
@@ -224,6 +248,8 @@
   And deberia guardar los cambios  al finalizar los ajustes
 
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #13-
   Scenario: Validar cambio de accion en piezas de "TOT" a "Reparar" pieza existente en listado no enviada a compras
 
@@ -239,6 +265,8 @@
   And no deberia modificar el precio  ni la cantidad del repuesto, ni visualizar referencia
   And deberia guardar los cambios  al finalizar los ajustes
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #14-
 
@@ -256,15 +284,14 @@
   And no deberia visualizar tipo de golpe, referencia ni modificar el precio de la pieza
   And deberia guardar los cambios  al finalizar los ajustes
 
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #15-
   Scenario: Validar cambio de accion en piezas de "Remover" a "Cambiar" pieza existente en listado no enviada a compras
 
   Regla de negocio 1: La agrupacion de la pieza al ser modificada de accion debe permanecer con el estado actual
   Posibles cambios de accion de la pieza: "TOT"-> "Remover"->"Cambiar" .Filas 56 y 61 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
-
-
 
   Given que el usuario con <Rol> de la <Aseguradora> se encuentra realizando proceso de ajuste al aviso en estado <estado>
   And existe una pieza con accion "Remover" en el listado de repuestos no enviada a compras en acciones anteriores
@@ -273,6 +300,8 @@
   And no deberia visualizar el tipo de golpe
   And deberia guardar los cambios  al finalizar los ajustes
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #16-
 
   Scenario: Validar cambio de accion en piezas de "Remover" a "Reparar" pieza existente en listado no enviada a compras
@@ -287,6 +316,9 @@
   Then el usuario deberia visualizar nuevamente el tipo de golpe de la pieza con el nivel de danio guardado
   And no deberia modificar el precio  ni la cantidad del repuesto, ni visualizar referencia
   And deberia guardar los cambios  al finalizar los ajustes
+
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
 
   #17
 
@@ -312,6 +344,8 @@
   |modificar referencia|
   |modificar precio|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #18-
   Scenario: Cargar pieza que ha sido eliminada en cualquier accion <accion> durante el proceso de ajuste enviada o no a compras
 
@@ -334,7 +368,8 @@
   |remover|
   |tot|
 
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #19-
   Scenario: Pieza de cambio con cotizacion recibida que cambia a reparacion o remocion no debe mostrar informacion de la cotizacion
   Posibles cambios de accion de la pieza: Filas 72-75 en matriz de posiciones "https://docs.google.com/spreadsheets/d/1J6Ek8xsj5tvhUefBc6Rm6fmlH3-5KhOB/edit#gid=292882700"
@@ -359,6 +394,8 @@
   Then el usuario no deberia visualizar la informacion de la cotizacion de la pieza
   And deberia visualizar la actualizacion en el valor de repuestos y mano de obra
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
  #21-
   Scenario: Permitir al usuario con <Rol> enviar a cotizar las piezas de cambio o TOT para los avisos en estado <estado>
 
@@ -368,7 +405,8 @@
   Then se deberia mostrar al usuario la informacion a enviar y solicitar la confirmacion del envio
   And una vez se confirme el envio se deberia notificar que el envio fue realizado
 
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #22  Pendiente confirmar comportamiento en sesion****
   Scenario: Notificar al usuario cuando se presenta fallos en la solicitud de cotizacion de piezas
 
@@ -378,6 +416,8 @@
   Then se deberia notificar al usuario la causa del fallo del envio
   And permitir enviar las piezas nuevamente una vez se haya solucionado el fallo
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #23
   Scenario: Permitir enviar a cotizar pieza TOT que habia sido enviada como repuesto de cambio
 
@@ -397,6 +437,8 @@
   |remover|
   |cambiar|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #24
   Scenario: Permitir enviar a cotizar pieza de cambio que habia sido enviada a compras como TOT
 
@@ -415,7 +457,8 @@
   |reparar|
   |remover|
   |cambiar|
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #25-
   Scenario: Recuperar informacion de la cotizacion para repuestos de cambio
 
@@ -434,7 +477,8 @@
   |informacion>
   |precio, calidad, dias de entrega, descuento, sucursal|
 
-
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #26-
   Scenario: Recuperar informacion de la cotizacion para TOT
 
@@ -453,6 +497,8 @@
   |informacion>
   |precio, calidad, dias de entrega, descuento, sucursal|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #27
   Scenario: Permitir al usuario ordenar la informacion del listado de repuestos
 
@@ -466,6 +512,8 @@
   |Accion|
   |Precio|
 
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|
   #28 No permitir el ordenamiento hasta el guardado de datos
   Scenario: No permitir al usuario realizar un ordenamiento de repuestos si se ha modificado algun valor en el listado de repuestos
   Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
@@ -478,7 +526,7 @@
   |Accion|
   |Precio|
 
-    #28 Permitir el ordenamiento hasta el guardado de datos
+  #28 Permitir el ordenamiento hasta el guardado de datos
   Scenario: Permitir al usuario realizar un ordenamiento de repuestos en el listado de repuestos
   Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
   And el usuario realiza el guardado de cambios
@@ -490,3 +538,6 @@
   |Nombre de repuesto|
   |Accion|
   |Precio|
+
+  |rol|
+  |https://docs.google.com/spreadsheets/d/1Je__26V8IVffdymRRvrEk3dlwC9WGkhX/edit#gid=676454652|

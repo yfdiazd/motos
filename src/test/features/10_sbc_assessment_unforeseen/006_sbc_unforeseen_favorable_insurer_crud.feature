@@ -58,4 +58,66 @@
   |accion|
   |cambiar|
 
-  #5-
+  #5
+  Scenario: Permitir cargar como imprevisto la modificacion del valor comercial a rol <Rol> de aseguradora para avisos "Autorizados"
+
+  Given que el usuario con rol <Rol> de aseguradora ingresa a la valoracion de un aviso en estado "Autorizado"
+  When el usuario accede a los imprevistos
+  Then el usuario deberia poder modificar el valor comercial del vehiculo
+
+  #6
+  Scenario: Imprevisto por modificacion de valor comercial no requiere subir fotografias
+
+  Validacion: Se notifica el valor comercial al modulo Administracion en el detalle del aviso al finalizar la valoracion
+
+  Given que el usuario con rol <Rol> de aseguradora desea modificar el valor comercial del vehiculo como imprevisto de un aviso "Autorizado"
+  When el usuario modifica el valor comercial
+  And finaliza el proceso de valoracion
+  Then no debería requerir subir fotografias como soporte de la modificacion
+
+
+
+ #7
+  Scenario: Imprevisto por reasignacion de taller en la misma ciudad no requiere subir fotografias
+
+  Validacion: Se notifica el cambio de taller al modulo Administracion en el detalle del aviso al finalizar la valoracion
+
+  Given que el usuario con rol <Rol> de aseguradora desea reasignar la valoracion a otro taller en la misma ciudad
+  When el usuario modifica el taller en la misma ciudad
+  And finaliza el proceso de valoracion
+  Then no debería requerir subir fotografias como soporte de la modificacion
+
+
+ #8
+  Scenario: Imprevisto por modificacion de Ciudad de taller y Taller no requiere fotografias
+
+  Validacion: Se notifica el cambio de taller y ciudad del taller al modulo Administracion en el detalle del aviso al finalizar la valoracion
+
+  Given que el usuario con rol <Rol> de aseguradora desea reasignar la valoracion en otra ciudad diferente
+  When el usuario modifica la ciudad del taller y el taller
+  And finaliza el proceso de valoracion
+  Then no debería requerir subir fotografias como soporte de la modificacion
+
+ #9
+  Scenario: Validar alerta de notificacion por cambio de taller cuando el aviso esta en estado "Autorizado"
+
+  Given que el Administrador desea reasignar el caso a otro taller en la misma ciudad
+  When el Administrador modifica el taller en la misma ciudad
+  Then deberia visualizar una alerta por posible afectacion a los procesos de cotizacion y compra asociados a la valoracion
+  And deberia poder elegir si acepta o no la modificacion
+
+
+ #10
+  Scenario: Validar alerta de notificacion por cambio de Ciudad de taller cuando el aviso esta en estado "Autorizado"
+
+  Given que el Administrador desea reasignar el taller en otra ciudad diferente
+  When el Administrador modifica la ciudad del taller
+  Then deberia visualizar una alerta por posible afectacion a los procesos de cotizacion y compra asociados a la valoracion
+  And deberia poder elegir si acepta o no la modificacion
+
+ #11
+  Scenario: Restringir imprevistos para cambio de Ciudad de Taller o Taller a roles diferente al "Administrador"
+
+  Given que el usuario con rol <Rol> diferente a "Administrador" ingresa a la valoracion de un aviso en estado "Autorizado"
+  When el usuario realiza el proceso de cargue de imprevistos
+  Then no deberia poder modificar ni la ciudad del taller ni el taller

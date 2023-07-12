@@ -348,7 +348,7 @@
   And la cantidad de paginas del paginador es 1
 
 
-
+  #https://app.clickup.com/t/3138710/INC-1910
 
 #6
   Scenario: Validar visualizacion de repuestos de acuerdo al tipo de ordenamiento

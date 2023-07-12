@@ -1,3 +1,5 @@
+#HU: https://app.clickup.com/t/3138710/INC-1909
+
  #1 -
 
  Scenario: Validar que el usuario de la aseguradora o del taller no pueda editar los <datos del vehiculo> y la <informacion del aviso>
@@ -60,28 +62,12 @@
  |Anulado|Analista aseguradora|
 
 
- #4 -
-
- Scenario: Restringir imprevistos por modificacion del valor comercial a rol <Rol> de taller para avisos "Autorizados"
-
- Given que el usuario con rol <Rol> de taller ingresa a la valoracion de un aviso en estado "Autorizado"
- When el usuario accede a los imprevistos
- Then el usuario no deberia poder modificar el valor comercial del vehiculo como imprevisto
-
- Examples:
- |Rol|
- |Jefe de taller|Asesor de servicio taller|Cotizador de danios taller|
-
- #5 -
-
- Scenario: Permitir cargar como imprevisto la modificacion del valor comercial a rol <Rol> de aseguradora para avisos "Autorizados"
-
- Given que el usuario con rol <Rol> de aseguradora ingresa a la valoracion de un aviso en estado "Autorizado"
- When el usuario accede a los imprevistos
- Then el usuario deberia poder modificar el valor comercial del vehiculo
+  #Se mueve escenario 5 a feature 006_sbc_unforeseen_favorable_insurer_crud.feature carpeta 10. Se mueve escenario 4 a feature 007_sbc_unforeseen_favorable_workshop_crud.feature donde queda como escenario 5 en carpeta 10. Se movió los dos escenarios por obedecer a escenarios de imprevistos.
 
 
- Examples:
+
+
+Examples:
  |Rol|
  |Facilitador|Móvil|ATS|Mesa especializada|Analista Aseguradora|Administrador|Superadministrador|Perito aseguradora|Gestor taller|
 
@@ -188,7 +174,9 @@
  #11-
 
  Scenario: Recalcular tarifas y mano de obra cuando se realiza un cambio de taller si el taller tiene configurada la marca que se esta valorando
- Validacion: Se notifica el valor de mano de obra al modulo Administracion en el detalle del aviso al finalizar la valoracion
+
+ Regla de negocio 1: Se notifica el valor de mano de obra al modulo Administracion en el detalle del aviso al finalizar la valoracion
+ Regla de negocio 2: Al cambiar el taller en el campo valor hora MO de la pantalla MO se debe visualizar las nuevas tarifas del taller y se debe recalcular los valores de MO carroceria y mecatronica y por ende el valor total de MO
 
  Given que el usuario con <Rol> de la <Aseguradora> con <permisos asociados> se encuentra ajustando la valoracion
  And desea realizar un cambio de taller
@@ -228,62 +216,7 @@
  |Actualizar Siniestro|
  |Autorizado|
 
-  #13
- Scenario: Imprevisto por modificacion de valor comercial no requiere subir fotografias
-
- Validacion: Se notifica el valor comercial al modulo Administracion en el detalle del aviso al finalizar la valoracion
-
- Given que el usuario con rol <Rol> de aseguradora desea modificar el valor comercial del vehiculo como imprevisto de un aviso "Autorizado"
- When el usuario modifica el valor comercial
- And finaliza el proceso de valoracion
- Then no debería requerir subir fotografias como soporte de la modificacion
-
-
-
- #14
- Scenario: Imprevisto por reasignacion de taller en la misma ciudad no requiere subir fotografias
-
- Validacion: Se notifica el cambio de taller al modulo Administracion en el detalle del aviso al finalizar la valoracion
-
- Given que el usuario con rol <Rol> de aseguradora desea reasignar la valoracion a otro taller en la misma ciudad
- When el usuario modifica el taller en la misma ciudad
- And finaliza el proceso de valoracion
- Then no debería requerir subir fotografias como soporte de la modificacion
-
-
- #15
- Scenario: Imprevisto por modificacion de Ciudad de taller y Taller no requiere fotografias
-
- Validacion: Se notifica el cambio de taller y ciudad del taller al modulo Administracion en el detalle del aviso al finalizar la valoracion
-
- Given que el usuario con rol <Rol> de aseguradora desea reasignar la valoracion en otra ciudad diferente
- When el usuario modifica la ciudad del taller y el taller
- And finaliza el proceso de valoracion
- Then no debería requerir subir fotografias como soporte de la modificacion
-
- #16
- Scenario: Validar alerta de notificacion por cambio de taller cuando el aviso esta en estado "Autorizado"
-
- Given que el Administrador desea reasignar el caso a otro taller en la misma ciudad
- When el Administrador modifica el taller en la misma ciudad
- Then deberia visualizar una alerta por posible afectacion a los procesos de cotizacion y compra asociados a la valoracion
- And deberia poder elegir si acepta o no la modificacion
-
-
- #17
- Scenario: Validar alerta de notificacion por cambio de Ciudad de taller cuando el aviso esta en estado "Autorizado"
-
- Given que el Administrador desea reasignar el taller en otra ciudad diferente
- When el Administrador modifica la ciudad del taller
- Then deberia visualizar una alerta por posible afectacion a los procesos de cotizacion y compra asociados a la valoracion
- And deberia poder elegir si acepta o no la modificacion
-
- #18
- Scenario: Restringir imprevistos para cambio de Ciudad de Taller o Taller a roles diferente al "Administrador"
-
- Given que el usuario con rol <Rol> diferente a "Administrador" ingresa a la valoracion de un aviso en estado "Autorizado"
- When el usuario realiza el proceso de cargue de imprevistos
- Then no deberia poder modificar ni la ciudad del taller ni el taller
+# Los escenarios 13, 14 , 15, 16, 17 y 18 se mueven a feature 006_sbc_unforeseen_favorable_insurer_crud.feature como 7,8,9,10,11 respectivamente
 
 
  #19
@@ -344,7 +277,7 @@
  |Accion|
  |Precio|
 
-    #22 Permitir el ordenamiento hasta el guardado de datos
+ #22 Permitir el ordenamiento hasta el guardado de datos
  Scenario: Permitir al usuario realizar un ordenamiento de repuestos en el listado de repuestos
  Given que el usuario con rol <Rol> de la <Aseguradora> ha realizado algun cambio sobre el listado de repuestos
  And el usuario finaliza el proceso de CRUD
@@ -357,3 +290,11 @@
  |Nombre de repuesto|
  |Accion|
  |Precio|
+
+ #23 -
+ Scenario: Descargar Documentos Valoracion con estado <estado>
+
+ Given que el usuario con <Rol> de la <Aseguradora> desea descargar los documentos de la valoracion
+ When el usuario consulta la valoracion del aviso en <estado>
+ And descarga los documentos de la valoracion
+ Then el usuario deberia poder obtener una carpeta .zip con los documentos guardadas de la valoracion

@@ -1,3 +1,5 @@
+ #https://app.clickup.com/t/3138710/INC-1907
+
  #1
  Scenario: Valorar aviso sin número de siniestro
  Given Que el aviso en estado "Sin valorar" no tiene un número de siniestro asociado

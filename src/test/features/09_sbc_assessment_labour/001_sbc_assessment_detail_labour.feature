@@ -1,3 +1,4 @@
+#https://app.clickup.com/t/3138710/INC-1915
  #1
  Scenario: Validar acceso pantalla "Mano de Obra" desde bandeja de avisos para rol de aseguradora
 

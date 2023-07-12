@@ -1,3 +1,5 @@
+# https://app.clickup.com/t/3138710/INC-1907
+
 #1
  Scenario: Cargar imagen de tarjeta de propiedad para extraer número VIN a traves de OCR
 

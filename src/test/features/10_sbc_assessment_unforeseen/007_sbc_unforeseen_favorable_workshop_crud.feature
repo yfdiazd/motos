@@ -68,3 +68,14 @@
   |modificar cantidad|
 
 
+  # 5-
+
+  Scenario: Restringir imprevistos por modificacion del valor comercial a rol <Rol> de taller para avisos "Autorizados"
+
+  Given que el usuario con rol <Rol> de taller ingresa a la valoracion de un aviso en estado "Autorizado"
+  When el usuario accede a los imprevistos
+  Then el usuario no deberia poder modificar el valor comercial del vehiculo como imprevisto
+
+  Examples:
+  |Rol|
+  |Jefe de taller|Asesor de servicio taller|Cotizador de danios taller|
