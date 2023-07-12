@@ -38,6 +38,9 @@
  #3 -Funcionalidad cambio de accion "Reparar" a "Cambiar"
   Scenario: Validar cambio de accion en piezas de "Reparar" a "Cambiar"
 
+  Regla de negocio 1: El cambio de accion de la pieza llama nuevamente al baremo y actualiza el valor de la MO si es el caso
+  Regla de negocio 2: El valor de repuestos se ve afectado si se ingresa precio  para la pieza en estado de cambio de lo contrario no afecta el valor actual
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And no se visualiza la tabla de repuestos
   When el usuario ingresa una pieza
@@ -53,7 +56,7 @@
   And el sistema habilita el campo "Cantidad" para modificar la cantidad de repuesto
   And el sistema mantiene encendido el switch "Agrupar" en la opcion previamente elejida
   And el campo tipo de golpe no se debe visualizar
-  And el campo "Ref" se visualiza habilitado si el <pais> esta configurado para trabajar con referencias, sino no deberia visualizarse este campo
+  And el campo "Ref" se visualiza habilitado para su edicion
   When el usuario hace clic en el boton "Guardar"
   Then muestra el mensaje: "¡Muy bien! Los cambios fueron realizados"
   And guarda los cambios realizados
@@ -61,6 +64,10 @@
 
  #4 -Funcionalidad cambio de accion "Reparar" a "Remover". Pdte criterio
   Scenario: Validar cambio de accion en piezas de "Reparar" a "Remover"
+
+  Regla de negocio 1: El cambio de accion de la pieza llama nuevamente al baremo y actualiza el valor de la MO si es el caso
+  Regla de negocio 2: El valor de repuestos no se afecta
+
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Reparar"
@@ -76,9 +83,14 @@
   And mantiene la misma posicion de la pieza en base de datos
 
 
- # 5-Funcionalidad cambio de accion "Reparar a TOT". Falta criterio
+ #5-Funcionalidad cambio de accion "Reparar a TOT". Falta criterio
 
   Scenario: Validar cambio de accion de piezas en "Reparar a "TOT"
+
+  Regla de negocio 1: El valor de MO se afecta si la pieza en reparar tenia horas asociadas en el baremo, al pasar a TOT deberia disminuir las horas y por ende el valor de MO
+  Regla de negocio 2: El valor de repuestos no se afecta
+
+
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Reparar"
@@ -96,6 +108,9 @@
  #6-Funcionalidad cambio de accion "Cambiar a "Reparar". Pdte criterio
   Scenario: Validar cambio de accion de piezas en "Cambiar" a "Reparar"
 
+  Regla de negocio 1: El cambio de accion de la pieza llama nuevamente al baremo y actualiza el valor de la MO si es el caso
+  Regla de negocio 2: El valor de repuestos se afecta si la pieza en accion cambiar tenia precio asociado, al pasar a reparar deberia disminuir el valor
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Cambiar"
   When el usuario cambia la accion de la pieza de "Cambiar" a "Reparar"
@@ -111,6 +126,10 @@
  #7-Funcionalidad cambio de accion "Cambiar a "TOT" . Pdte criterio
   Scenario: Validar cambio de accion de piezas en "Cambiar" a "TOT"
 
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO si la pieza en cambio tenia horas asociadas en el baremo, por ende al pasar a TOT disminuye el valor de MO
+  Regla de negocio 2: El valor de repuestos se afecta si la pieza en accion cambiar tenia precio asociado, al pasar a TOT deberia disminuir el valor
+
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Cambiar"
   When el usuario cambia la accion de la pieza de "Cambiar" a "TOT"
@@ -125,6 +144,10 @@
 
  #8-Funcionalidad cambio de accion "Cambiar a "Remover" . Pdte criterio
   Scenario: Validar cambio de accion en piezas de "Cambiar" a "Remover"
+
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO si la pieza en cambio tenia horas asociadas en el baremo y si reconoce horas en la nueva accion
+  Regla de negocio 2: El valor de repuestos se afecta si la pieza en accion cambiar tenia precio asociado, al pasar a Remover deberia disminuir el valor
+
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Cambiar"
@@ -142,6 +165,9 @@
  #9-Funcionalidad cambio de accion "TOT a "Cambiar" . Pdte criterio
 
   Scenario: Validar cambio de accion en piezas de "TOT" a "Cambiar"
+
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO si la pieza en cambio tenia horas asociadas en el baremo, para lo cual al pasar a TOT disminuye el valor
+  Regla de negocio 2: El valor de repuestos se afecta si la pieza en la nueva accion cambiar tiene ingresado precio, de lo contrario no deberia afectarse
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "TOT"
@@ -162,6 +188,9 @@
 
   Scenario: Validar cambio de accion en piezas de "TOT" a "Reparar"
 
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO si la pieza en reparacion tiene horas asociadas en el baremo, si es así, aumenta el valor de MO
+  Regla de negocio 2: El valor de repuestos no se afecta
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "TOT"
   When el usuario cambia la accion de la pieza de "TOT" a "Reparar"
@@ -178,6 +207,9 @@
  #11-Funcionalidad cambio de accion "TOT a "Remover" . Pdte criterio
 
   Scenario: Validar cambio de accion en piezas de "TOT" a "Remover"
+
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO si la pieza en remocion tiene horas asociadas en el baremo, si es así, aumenta el valor de MO
+  Regla de negocio 2: El valor de repuestos no se afecta
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "TOT"
@@ -197,6 +229,9 @@
 
   Scenario: Validar cambio de accion en piezas de "Remover" a "Reparar"
 
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO al realizar el consumo del baremo nuevamente, la afectacion puede ser hacia arriba o hacia abajo
+  Regla de negocio 2: El valor de repuestos no se afecta
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Remover"
   When el usuario cambia la accion de la pieza de "Remover" a "Reparar"
@@ -214,6 +249,9 @@
 
   Scenario: Validar cambio de accion en piezas de "Remover" a "TOT"
 
+  Regla de negocio 1: El cambio de accion de la pieza afecta el valor de MO si la accion en remocion tenia horas en el baremo, al pasar a tot se disminuye ese valor
+  Regla de negocio 2: El valor de repuestos no se afecta
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion "Remover"
   When el usuario cambia la accion de la pieza de "Remover" a "TOT"
@@ -228,23 +266,26 @@
   And guarda los cambios realizados
   And mantiene la misma posicion de la pieza en base de datos
 
- # - Funcionalidad eliminar piezas . Pdte criterio
+ #14 - Funcionalidad eliminar piezas . Pdte criterio
   Scenario: Validar eliminacion de pieza para cada <Accion>
+
+  Regla de negocio 1: La eliminación de la pieza afecta el valor de MO si en acción cambiar, reparar o remover tenía horas en el baremo, por lo cual al eliminar disminuye en el valor de MO
+  Regla de negocio 2: El valor de repuestos se afecta unicamente para eliminacion de piezas de cambio que tenian un precio > a 0
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And existe piezas en la tabla de repuestos con accion <Accion>
-  And el usuario hace clic en el boton "Eliminar" de la tabla de repuestos para la pieza a eliminar
+  And el usuario hace clic en la opcion de elminar para la pieza que desea quitar
   Then el sistema muestra el pop up con el mensaje: "¿ Estás seguro de que deseas eliminar el repuesto seleccionado ?"
   And los botones "Cancelar" y "Aceptar"
   When el usuario hace clic en el boton "Cancelar"
   Then el sistema cierra el pop up y deja al usuario en la pantalla de "Detalle Valoracion"
-  When el usuario hace clic nuevamente en el boton "Eliminar" para una pieza
+  When el usuario hace clic nuevamente en la opcion "Eliminar" para una pieza
   Then el sistema muestra el pop up con el mensaje: "¿ Estás seguro de que deseas eliminar el repuesto seleccionado ?"
   When el usuario hace clic en el boton "Aceptar"
   Then el sistema quita la pieza de la tabla de repuestos
   And los cambios solo se guardan cuando el usuario pulsa el boton "Guardar" de lo contrario no debe guardarse los cambios
   When el usuario hace clic en el boton "Guardar"
-  Then muestra el mensaje: "¡Muy bien! Los cambios se realizaron exitosamente" unicamente con el boton "Aceptar"
+  Then muestra el mensaje: "¡Muy bien! Los cambios se realizaron exitosamente"
   And el sistema guarda los cambios realizados
   And mantiene la misma posicion de la pieza en base de datos
   And la pieza queda marcada con eliminar en "True"
@@ -296,33 +337,35 @@
 
   Scenario: Validar cantidad de paginas cuando se elimina todos los repuestos
 
+  Regla de negocio 1: se restablece a 0 el valor de MO
+  Regla de negocio 2: El valor de repuestos se afecta unicamente para eliminacion de piezas de cambio que tenian un precio > a 0
+
+
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
   And la tabla de repuestos tiene varias paginas organizadas en items de 10 por default
-  When el usuario selecciona todos los repuestos
-  And hace clic en el boton "Eliminar"
+  When el usuario elimina todos los repuestos de la tabla
   Then el sistema muestra la tabla de repuestos vacia
   And la cantidad de paginas del paginador es 1
 
 
+  #https://app.clickup.com/t/3138710/INC-1910
 
-
-#6 cual es el ordenamiento por default? si se agrega repuestos se mantiene que se liste de primero y se reseteria el ordenar por ?
-#validar con vic comportamiento en el ordenamiento al agregar pieza
+#6
   Scenario: Validar visualizacion de repuestos de acuerdo al tipo de ordenamiento
 
   Given Que el usuario con <Rol> de la <Aseguradora> se encuentra ubicado en la pantalla "Detalle Valoracion"
-  And ya se encuentra cargados repuestos en la valoracion con accion "Cambiar", "Reparar"
+  And ya se encuentra cargados repuestos en la valoracion con accion "Cambiar", "Reparar","Remover", "TOT"
   And el campo "Ordenar por" se encuentra seleccionado por defecto con la opcion "Nombre del repuesto"
   And el listado de repuestos se visualiza ordenado por nombre
   When el usuario selecciona la opcion "Accion" en el campo "Ordenar por"
   Then el sistema ordena los repuestos en la tabla listando primero los de accion "Cambiar"
-  And los de accion "Reparar" se listan posterior a los de cambio, segidos de las acciones "Remover"
+  And los de accion "Reparar" se listan posterior a los de cambio, segUidos de las acciones "Remover"
   And por ultimo las piezas de accion "TOT"
   When el usuario selecciona la opcion "Precio" en el campo "Ordenar por"
   Then el sistema ordena los repuestos en la lista por precio de mayor a menor independiente del nombre y la accion
   When el usuario carga una nuevo repuesto desde el buscador de repuestos
   Then el sistema muestra el repuesto en primer lugar en la tabla
-  And se mantiene el ordenamiento de los demas repuestos por nombre de repuesto
+  And se mantiene el ordenamiento de los demas repuestos por nombre de repuesto, bloqueando el botón de ordenamiento hasta que se realice el guardado de las piezas nuevas
   When el usuario hace clic en el boton "Guardar"
   Then el sistema guarda la informacion cargada
   And el estado del aviso continua en "Sin Valorar"

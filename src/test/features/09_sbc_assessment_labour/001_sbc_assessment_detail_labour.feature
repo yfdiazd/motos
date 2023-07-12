@@ -1,14 +1,12 @@
- #Nota: cambiar el titulo de la pantalla, debería decir Mano de Obra, actualmente aparece como "Valoración" y por ende se debe ajustar la miga de pan
-#Falta incluir criterio
- #Validar con Lore si el sistema debe mantener los
+#https://app.clickup.com/t/3138710/INC-1915
  #1
- Scenario: Validar acceso pantalla "Mano de Obra" desde bandeja de avisos
+ Scenario: Validar acceso pantalla "Mano de Obra" desde bandeja de avisos para rol de aseguradora
 
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla "Detalle Valoración" desde el botón "Ir" en la bandeja de avisos
  When El usuario hace clic en el botón lápiz de la tarjeta "Mano de Obra"
  Then el sistema direcciona al usuario a la pantalla "Mano de Obra"
- And habilita la sección de ajuste en horas si el <rol> es un rol de <aseguradora>, sino muestra deshabilitada esta sección para su edición
- And la sección de operaciones de control se encuentra habilitada para los roles de aseguradora
+ And habilita la sección de ajuste en horas para su edicion
+ And la sección de operaciones de control para su modificacion
 
  |Rol|
  |analista aseguradora|
@@ -22,30 +20,37 @@
  |Bolivar|
  |Sura Panama|
 
-#Tener en cuenta que para motos no aplica Pintura
- #Falta incluir criterio
  #2
+  Scenario: Validar acceso pantalla "Mano de Obra" desde bandeja de avisos para rol de taller
+
+  Given Que el usuario con <Rol> de taller ingresa a la pantalla "Detalle Valoración" desde el botón "Ir" en la bandeja de avisos
+  When El usuario hace clic en el botón lápiz de la tarjeta "Mano de Obra"
+  Then el sistema direcciona al usuario a la pantalla "Mano de Obra"
+  And muestra deshabilitada para edición la sección de ajuste de mano de obra
+  And la sección de operaciones de control se encuentra habilitada para su edicion
+
+ #3
  Scenario: Validar tarifa de taller para carrocería  y mecatronica cuando la marca que se esta valorando tiene tarifa configurada
+ Regla de negocio: La tarifa consulta en administracion es la tarifa configurada al taller para la marca
 
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
  And  y la marca del vehiculo que se esta valorando tiene tarifa configurada para el taller asociado
  Then el sistema muestra en los campos carrocería y mecatronica la tarifa configurada
  And el campo no permite ser editado por el usuario
 
-#Falta incluir criterio
- #3
+
+ #4
  Scenario: Validar tarifa de taller para carrocería  y mecatronica cuando la marca que se esta valorando no tiene tarifa configurada o no esta asociada al taller
- Las tarifas de tller se configuran por marca y se consultan por talleres de Admin
+
+ Regla de negocio: Las tarifas de taller se configuran por marca y se consultan por talleres de Admin
 
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
  And  y la marca del vehiculo que se esta valorando no tiene tarifa configurada para el taller asociado
  Then el sistema muestra en los campos carrocería y mecatronica la tarifa minima configurada para el taller
  And el campo no permite ser editado por el usuario
 
-#Validar con Lore cual es el comportamiento esperado, en pesados cambia el valor a 0 dado que tenga un valor negativo superior a Horas Orbika
-  #entonces preguntar si va a adaptar ese comportamiento, o qué debe hacer el sistema
- #Falta incluir criterio
- #4
+
+ #5
  Scenario: Validar comportamiento cuando en campo Ajustes en Horas se ingrese valor negativo superior a Orbika
 
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
@@ -62,7 +67,7 @@
  |valor_no_permitido|
  |-10|
 
- #5
+ #6
  Scenario: Validar comportamiento cuando en el campo Ajustes en Horas se ingrese valor igual a Valor Orbika en negativo
 
  Given Que el usuario con <Rol> de Aseguradora se encuentra en la pantalla "Mano de Obra"
@@ -71,7 +76,7 @@
  And el valor de carrocería o mecatronica se recalcula
  And permite al usuario guardar los cambios realizados
 
- #6
+ #7
  Scenario: Validar comportamiento cuando en el campo Ajustes en Horas se ingrese valor positivo superior a Orbika
 
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
@@ -79,10 +84,9 @@
  Then el sistema muestra en los campos valor total carrocería y mecatronica el valor ajustado
 
 
-#Falta incluir criterio, pendiente de validar con Lore las horas para cada operación
-#Validar con Lore si se va a dejar palabra Valor total mecánica o valor total mecatrónica
- #6
+ #8
  Scenario: Validar valor total para carrocería  y mecatronica cuando se selecciona operación de control
+
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
  When el usuario selecciona las <operaciones_carrocería>
  Then el sistema recalcula el Valor total carroceria
@@ -92,27 +96,32 @@
 
  Examples:
  |operaciones_carroceria|
- |Alineación de chasis|
- |Bancada|
+ |Alineación de chasis|3|
+ |Bancada nivel 1|1.5|
+ |Bancada nivel 2|3|
+ |Bancada nivel 3|6|
 
  Examples:
- |operaciones_mecanica|
- |Diagnóstico electrónico|
- |Programación|
- |Enradiar|
- |Diagnóstico mecánico|
- |Balanceo|
+ |operaciones_mecanica|horas|
+ |Diagnóstico electrónico|1|
+ |Programación|1|
+ |Enradiar|2|
+ |Diagnóstico mecánico|1.5|
+ |Balanceo 1|0.3|
+ |Balanceo 2|0.6|
 
 
-#7 ajustar de acuerdo al figma boton guarrdar ya no va sino confirmar  ,
+
+ #9
  Scenario: Validar comportamiento del sistema al hacer clic botón "Confirmar"
+
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
  And ha realizado modificaciones en horas u operaciones de control
  When el usuario haga clic en el botón "Confirmar"
  Then el el sistema mantiene los cambios realizados los cuales se guardaran una vez finalizado el proceso de valoracion
  And dirige a la pantalla del detalle de la valoración
 
-#8
+#10
  Scenario: Validar comportamiento del botón "Descartar"
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
  And ha realizado modificaciones en horas u operaciones de control
@@ -121,7 +130,7 @@
  And al confimar dicha advertencia se descartan los cambios realizados
  And deja al usuario en la pantalla de mano de obra
 
-  #9
+ #11
  Scenario: Validar comportamiento del botón "Volver"
  Given Que el usuario con <Rol> de la <Aseguradora> se encuentra en la pantalla "Mano de Obra"
  And ha realizado modificaciones en horas u operaciones de control

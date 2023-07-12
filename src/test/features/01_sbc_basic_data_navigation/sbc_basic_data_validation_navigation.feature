@@ -1,3 +1,4 @@
+# https://app.clickup.com/t/3138710/INC-1907
 #1
  Scenario: Redireccionamiento a la pantalla "Tipo de vehiculo" al hacer clic en el boton "Volver"
 
@@ -38,16 +39,8 @@
  When El usuario da clic en el boton "Volver"
  Then El sistema regresa a la pantalla de datos basicos mostrando toda la información diligenciada
 
-#3 Falta criterio
- Scenario: Boton "Continuar" en la pantalla de datos basicos solo debe permitirse accionar una unica vez
 
- Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
- When El usuario diligencia el formulario de datos basicos
- And Hace clic en el boton "Continuar"
- Then El sistema debe bloquear el boton
- And no permitir que se accione, incluso si el usuario esta en otra pestaña o navegador
-
-# 4 Cambio ajustado
+# 3 Cambio ajustado
  Scenario: Validación de campos obligatorios en el formulario datos basicos
 
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
@@ -58,7 +51,7 @@
  And el usuario hace clic en el boton "Continuar"
  Then el sistema muestra el mensaje: "El valor debe ser mayor a cero" en el campo "Valor comercial"
 
-#5 Falta criterio
+#4 Falta criterio
  Scenario: Validacion <Tipos de carroceria> por <Aseguradora>
 
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
@@ -82,11 +75,11 @@
  |Moto carro|
 
 
- #6 redireccionamiento a paso en proceso
+ #5 redireccionamiento a paso en proceso
  Scenario: validacion de retomar proceso de valoracion al ultimo paso guardado
  Given Que el usuario abandona la valoracion en el <Paso>
  When se ingresa nuevamente a la valoracion
- Then se debe retomar el paso de la valoracion previamente avandonado.
+ Then se debe retomar el paso de la valoracion previamente abandonado.
  |Paso|
  |Tipo de vehiculo|
  |Datos basicos|

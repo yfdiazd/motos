@@ -1,3 +1,4 @@
+# https://app.clickup.com/t/3138710/INC-1907
 #1
  Scenario: Validacion VIN 17 caracteres con Coincidencia Exacta
 
@@ -14,12 +15,12 @@
  |KMHCT51BAGU240317|
  |KNABX512BET629669|
 
- #2Sebas
+ #2
  Scenario: Validacion VIN menor a 17 digitos
- al ingresar el vin menor a 17 caracteres, no se debe hacer llamado al modelo de vin
+ Regla de negocio: al ingresar el vin menor a 17 caracteres, no se debe hacer llamado al modelo de vin
 
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
- When el usuario digita el numero de <VIN> en el campo VIN
+ When el usuario digita el numero de <VIN> en el campo VIN menor a 17 caracteres
  Then El sistema valida el VIN ingresado
  And muestra el mensaje: "Ingresa 17 caracteres - Completa con ceros a la derecha."
  And no permite listar datos de vehiculos
@@ -65,7 +66,6 @@ Examples:
 
 
  #4
-
  Scenario: Validacion VIN No encontrado
 
  Given Que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
@@ -94,7 +94,7 @@ Examples:
  And identifica si el vin fue digitado o leido por OCR
  And avanza a la pantalla de "Zonas afectadas"
 
- #5 Falta criterio
+ #5
  Scenario: Validar caracteres especiales en campo VIN
 
  Given que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
@@ -108,7 +108,7 @@ Examples:
  |caracteres especiales|
 
 
- # 6
+ #6
  Scenario: Realizar validacion de VIN reconocido cuando es modificado
 
  Given que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
@@ -118,7 +118,7 @@ Examples:
  And actualiza la informacion del vehiculo en los campos "Marca", "Linea", "Version", "Modelo" y "Valor Comercial"
 
 
- # 7
+ #7
  Scenario: Realizar validacion cuando se borra la informacion del campo VIN
 
  Given que el usuario con <Rol> de la <Aseguradora> ingresa a la pantalla de datos basicos
